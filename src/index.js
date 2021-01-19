@@ -1,6 +1,6 @@
 const express = require ('express')
 require('./db/mongoose')
-const UserRouter = require('./routers/Users')
+const routes = require('./routes')
 
 const app = express()
 
@@ -9,7 +9,7 @@ const port = process.env.PORT
 
 // serving up the json file and the routes
 app.use(express.json());
-app.use(UserRouter);
+app.use(routes);
 
 
 // serving up the server on the port
