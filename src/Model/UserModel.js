@@ -55,6 +55,23 @@ const UserSchema = new mongoose.Schema({
     }]
 })
 
+// verify user login
+UserSchema.statics.findByCredentials = async (username, password)=> {
+    const user = await User.findOne({ username })
+
+    if(!user) {
+        throw new Error('invalid user login details')
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password)
+
+    if(!isMatch) {
+        throw new Error('invalid user login details')
+    }
+
+    return user
+}
+
 // generating token for authentication
 UserSchema.methods.generateAuthToken = async function(){
     const user = this;
