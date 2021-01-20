@@ -52,8 +52,32 @@ const UserSchema = new mongoose.Schema({
             type: String,
             required: true
         }
-    }]
+    }],
+
+    emailToken: {
+        type: String
+    },
+
+    isVerified: {
+        type: Boolean,
+        required: true
+    }
+}, {
+    timestamps: true
 })
+
+// hide certain details like password tokens etc 
+UserSchema.methods.toJSON = function(){
+    const user = this
+    const userObject = user.toObject()
+
+   delete userObject.password
+   delete userObject.tokens
+   delete userObject.emailToken
+   delete userObject.confirmPassword
+   
+   return userObject
+}
 
 // verify user login
 UserSchema.statics.findByCredentials = async (username, password)=> {

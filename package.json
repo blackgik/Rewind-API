@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/blackgik/Rewind-API#readme",
   "dependencies": {
+    "@sendgrid/mail": "^7.4.2",
     "bcrypt": "^5.0.0",
     "env-cmd": "^10.1.0",
     "express": "^4.17.1",
