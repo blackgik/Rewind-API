@@ -1,27 +1,61 @@
 var express = require('express');
 var router = express.Router();
 var Movie = require('../Model/MoviesModel');
+var cloud = require('../helpers/cloudinaryConfig');
+var upload = require('../helpers/multerConfig');
 
 /* Create Movie */
-router.post('/upload', function(req, res, next) {
-  var data =  {
-    title: req.body.title,
+router.post('/upload', upload.videoUpload.any(), function(req, res, next) {
+var data = {
+    name: req.files[0].originalname,
     description: req.body.description,
-    videoFile: req.body.videoFile
-  }
+    url: req.files[0].path,
+    id: "",
+  };
 
-  Movie.create(data, (error, movie) => {
-    if (error) {
-        return res.send({
-            success: false,
-            error: error
-        })
-    } else {
-        return res.send({
-            success: true,
-            message: movie
-        })
+  //First check if movie is in database
+  console.log(req.files[0].originalname);
+  Movie.find({ name: data.name }, (err, cb) => {
+    if (cb.length) {
+      res.json({
+        error: true,
+        message: 'There was a problem uploading the video because movie exists',
+      });
     }
+  //If no such movie exists, upload movie
+    else {   
+      console.log("success")
+
+      var file = {
+        name: req.files[0].originalname,
+        description: req.body.description,
+        url: req.files[0].path,
+        id: "",
+      };
+
+      cloud
+        .uploads(file.url)
+        .then((movie) => {
+          Movie.create({
+            name: req.files[0].originalname,
+            description: req.body.description,
+            url: movie.url,
+            id: movie.id,
+          }, (error, movie) => {
+            if (error) {
+                return res.json({
+                    success: false,
+                    error: error
+                })
+            } else {
+                return res.json({
+                    success: true,
+                    message: movie
+                })
+            }
+        })
+    })
+  }
 })
 });
 

@@ -1,15 +1,20 @@
 var mongoose = require('mongoose');
 
 const movieSchema = new mongoose.Schema({
-    title: {
+    name: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     description: {
         type: String,
+        required: false
+    },
+    url: {
+        type: String,
         required: true
     },
-    videoFile: {
+    id: {
         type: String,
         required: true
     }

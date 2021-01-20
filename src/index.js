@@ -9,6 +9,7 @@ const port = process.env.PORT
 
 // serving up the json file and the routes
 app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 app.use(routes);
 
 
