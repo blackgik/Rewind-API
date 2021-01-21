@@ -1,8 +1,10 @@
 var express = require('express');
 var router = express.Router();
+var fs = require('fs');
+
 var Movie = require('../Model/MoviesModel');
-var cloud = require('../helpers/cloudinaryConfig');
-var upload = require('../helpers/multerConfig');
+var cloud = require('../helpers/cloudinary');
+var upload = require('../helpers/multer');
 
 /* Create Movie */
 router.post('/upload', upload.videoUpload.any(), function(req, res, next) {
@@ -36,6 +38,7 @@ var data = {
       cloud
         .uploads(file.url)
         .then((movie) => {
+          fs.unlinkSync(file.url);
           Movie.create({
             name: req.files[0].originalname,
             description: req.body.description,
