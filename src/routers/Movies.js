@@ -10,6 +10,7 @@ var upload = require('../helpers/multer');
 router.post('/upload', upload.videoUpload.any(), function(req, res, next) {
 var data = {
     name: req.files[0].originalname,
+    title: req.body.title,
     description: req.body.description,
     url: req.files[0].path,
     id: "",
@@ -30,6 +31,7 @@ var data = {
 
       var file = {
         name: req.files[0].originalname,
+        title: req.body.title,
         description: req.body.description,
         url: req.files[0].path,
         id: "",
@@ -38,9 +40,12 @@ var data = {
       cloud
         .uploads(file.url)
         .then((movie) => {
+          //Delete movie from filesystem
           fs.unlinkSync(file.url);
+
           Movie.create({
             name: req.files[0].originalname,
+            title: req.body.title,
             description: req.body.description,
             url: movie.url,
             id: movie.id,
