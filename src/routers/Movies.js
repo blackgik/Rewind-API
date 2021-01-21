@@ -8,25 +8,9 @@ var upload = require('../helpers/multer');
 
 /* Create Movie */
 router.post('/upload', upload.videoUpload.any(), function(req, res, next) {
-var data = {
-    name: req.files[0].originalname,
-    title: req.body.title,
-    description: req.body.description,
-    url: req.files[0].path,
-    id: "",
-  };
-
   //First check if movie is in database
-  console.log(req.files[0].originalname);
-  Movie.find({ name: data.name }, (err, cb) => {
-    if (cb.length) {
-      res.json({
-        error: true,
-        message: 'There was a problem uploading the video because movie exists',
-      });
-    }
-  //If no such movie exists, upload movie
-    else {   
+ 
+  //If no such movie exists, upload movie  
       console.log("success")
 
       var file = {
@@ -36,6 +20,8 @@ var data = {
         url: req.files[0].path,
         id: "",
       };
+
+      console.log(req.files[0].originalname);  
 
       cloud
         .uploads(file.url)
@@ -63,8 +49,6 @@ var data = {
             }
         })
     })
-  }
-})
 });
 
 /* Edit A Movie Entry*/
