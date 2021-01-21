@@ -41,7 +41,7 @@ var data = {
         .uploads(file.url)
         .then((movie) => {
           //Delete movie from filesystem
-         // fs.unlinkSync(file.url);
+          fs.unlinkSync(file.url);
 
           Movie.create({
             name: req.files[0].originalname,
