@@ -58,6 +58,11 @@ const UserSchema = new mongoose.Schema({
         type: String
     },
 
+    passwordToken: {
+        type:String,
+        default:''
+    },
+
     isVerified: {
         type: Boolean,
         required: true
@@ -75,6 +80,7 @@ UserSchema.methods.toJSON = function(){
    delete userObject.tokens
    delete userObject.emailToken
    delete userObject.confirmPassword
+   delete userObject.passwordToken
    
    return userObject
 }

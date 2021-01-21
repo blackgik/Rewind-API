@@ -57,9 +57,24 @@ const sendWelcomeEmail = async (userEmail, username)=> {
   
 }
 
+const sendEmailCancelation = async (email, name)=>{
+    try{
+        await sgMail({
+        to:email,
+        from:'c.echendu@genesystechhub.com',
+        subject: 'USER LOGOUT NOTIFICATION',
+        text: `Hey ${name} we noticed you logout on your device, \n anything we could done to be better?`,
+        html: `Hey ${name} we noticed you logout on your device, \n anything we could done to be better?`
+    })
+    }catch(e){
+        console.log(e)
+    }
+}
+
 
 module.exports = {
     verificationEmail,
     sendWelcomeEmail,
+    sendEmailCancelation
 
 }
