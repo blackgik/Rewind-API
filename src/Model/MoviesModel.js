@@ -6,6 +6,11 @@ const movieSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
+    title: {
+        type: String,
+        required: true,
+        unique: true
+    },
     description: {
         type: String,
         required: false
