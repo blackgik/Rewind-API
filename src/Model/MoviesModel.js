@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 
 const movieSchema = new mongoose.Schema({
     name: {
-        type: String,
+        type: [],
         required: true,
         unique: true
     },
@@ -10,7 +10,7 @@ const movieSchema = new mongoose.Schema({
         type: String,
         required: false
     },
-    url: {
+    path: {
         type: String,
         required: true
     },
