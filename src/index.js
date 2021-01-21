@@ -1,7 +1,8 @@
 const express = require ('express')
 const cors = require('cors');
 require('./db/mongoose')
-const UserRouter = require('./routers/Users')
+const routes = require('./routes')
+const cors = require('cors');
 
 const app = express()
 
@@ -10,8 +11,9 @@ const port = process.env.PORT
 
 // serving up the json file and the routes
 app.use(express.json());
-app.use(cors())
-app.use(UserRouter);
+app.use(express.urlencoded({ extended: false }));
+app.use(cors());
+app.use(routes);
 
 
 // serving up the server on the port
