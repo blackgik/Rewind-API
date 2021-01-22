@@ -10,7 +10,7 @@ const router = new express.Router()
 
 
 // creating the user sign up route
-router.post('/users/sign-up', async (req, res)=>{
+router.post('/sign-up', async (req, res)=>{
     const newUser = new User({
         ...req.body,
         emailToken: crypto.randomBytes(64).toString('hex'),
@@ -29,7 +29,7 @@ router.post('/users/sign-up', async (req, res)=>{
 });
 
 // user verification route
-router.get('/users/verify-email', async (req, res, next)=>{
+router.get('/verify-email', async (req, res, next)=>{
     try {
         const verifiedToken = req.query.token
     
@@ -59,7 +59,7 @@ router.get('/users/verify-email', async (req, res, next)=>{
 })
 
 // forgot password route
-router.post('/users/forgotPassword', async (req, res)=>{
+router.post('/forgotPassword', async (req, res)=>{
     try{
         const { email } = req.body;
         const user = await User.findOne({ email })
@@ -83,7 +83,7 @@ router.post('/users/forgotPassword', async (req, res)=>{
 })
 
 // reseting password
-router.post('/users/reset-password', async (req, res)=> {
+router.post('/reset-password', async (req, res)=> {
     try{
         const { passToken, newPass} = req.body
         if(passToken) {
@@ -141,7 +141,7 @@ router.post('/users/reset-password', async (req, res)=> {
 })
 
 // login user
-router.post('/users/login', async(req, res) => {
+router.post('/login', async(req, res) => {
     try{
         const user = await User.findByCredentials(req.body.username, req.body.password)
         const token = await user.generateAuthToken();
@@ -156,7 +156,7 @@ router.post('/users/login', async(req, res) => {
 })
 
 // User logout
-router.post('/users/me/logout', auth, async(req, res)=> {
+router.post('/me/logout', auth, async(req, res)=> {
     try{
         req.user.tokens = req.user.tokens.filter((token) => {
             return token.token != req.token
@@ -174,7 +174,7 @@ router.post('/users/me/logout', auth, async(req, res)=> {
 })
 
 // logout user from every device
-router.post('/users/me/logoutall', auth, async(req, res)=> {
+router.post('/me/logoutall', auth, async(req, res)=> {
     try{
         req.user.tokens =req.user.tokens.filter((token)=> delete token)
         req.user.save()
@@ -190,7 +190,7 @@ router.post('/users/me/logoutall', auth, async(req, res)=> {
 // 
 
 // updating user password or profile
-router.patch('/users/me/update', auth, async (req, res)=>{
+router.patch('/me/update', auth, async (req, res)=>{
     const updates = Object.keys(req.body)
     const allowableupdate = ['username', 'email', 'password']
     const isValidUpdate = updates.every((update)=> allowableupdate.includes(update));

@@ -6,6 +6,6 @@ var movieRouter = require('../routers/Movies');
 var app = express();
 
 app.use('/', movieRouter);
-app.use('/', userRouter);
+app.use('/users', userRouter);
 
 module.exports = app;
