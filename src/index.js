@@ -1,5 +1,4 @@
 const express = require ('express')
-const cors = require('cors');
 require('./db/mongoose')
 const routes = require('./routes')
 const cors = require('cors');
