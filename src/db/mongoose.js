@@ -4,7 +4,7 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 // connecting to the database
-mongoose.connect('mongodb+srv://admin:technology@cluster0.o8heh.mongodb.net/test', {
+mongoose.connect(process.env.MONGODB_URL, {
     useCreateIndex:true,
     useFindAndModify: false,
     useNewUrlParser: true,
