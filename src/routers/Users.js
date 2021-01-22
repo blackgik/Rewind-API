@@ -85,7 +85,7 @@ router.post('/forgotPassword', async (req, res)=>{
 // reseting password
 router.post('/reset-password', async (req, res)=> {
     try{
-        const { passToken, newPass} = req.body
+        const { passToken, newPass, confirmPass} = req.body
         if(passToken) {
             jwt.verify(passToken, process.env.RESET_LINK_TOKEN, async (err, data)=> {
                 if(err) {
@@ -94,6 +94,7 @@ router.post('/reset-password', async (req, res)=> {
                 const user = await User.findOne({passwordToken: passToken})
                 if (user){
                     user.password = newPass
+                    user.confirmPassword = confirmPass
                     await user.save
                     res.status(200).json({message:'password has been reset'})
                 }else{
