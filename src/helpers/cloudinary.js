@@ -14,7 +14,7 @@ exports.uploads = (file) => {
     cloudinary.uploader.upload(
       file,
       (movie) => {
-        resolve({ url: movie.url, description: movie.description, id: movie.public_id });
+        resolve(movie);
       },
       { resource_type: "auto" }
     );
