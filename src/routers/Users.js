@@ -114,7 +114,7 @@ router.post('/login-admin',  async (req, res)=> {
 router.get('/me', auth, async (req, res) => {
     res.status(200).json
     ({
-        ...req.user,
+        user:req.user,
         message: 'view your profile',
         success: true
     })
@@ -169,13 +169,14 @@ router.patch('/me/update', auth, async (req, res)=>{
 
     try{
         updates.forEach((update)=> req.user[update] = req.body[update] )
-
+        req.user.confirmPassword = req.user.password
         await req.user.save()
 
         res.status(200).send(req.user)
     }catch(e) {
+        console.log(e)
         res.status(400).json({
-            "message": e
+            "message": "failed to update"
         })
     }
 })
