@@ -7,26 +7,18 @@ const auth = require('../middleware/auth')
 const { verificationEmail, sendWelcomeEmail, sendEmailCancelation } = require('../services/emailVerify')
 const { sendPasswordEmailChange } = require('../services/passwordchange')
 const router = new express.Router()
+const {userRegistration, userLogin, userCount} = require('../controllers/userRoleAuth')
 
 
-// creating the user sign up route
+// creating the user sign-up route
 router.post('/sign-up', async (req, res)=>{
-    const newUser = new User({
-        ...req.body,
-        emailToken: crypto.randomBytes(64).toString('hex'),
-        isVerified: false
-    });
-
-    try{
-        await newUser.save()
-        verificationEmail(newUser.email, newUser.emailToken, newUser.username)
-        const token = newUser.generateAuthToken()
-
-        res.status(201).send({ newUser, token })
-    }catch (e){
-        res.status(400).send(e)
-    }
+    await userRegistration(req.body, 'users', res)
 });
+
+// admin registration 
+router.post('/users/admin-sign-up', async(req, res)=>{
+    await userRegistration(req.body, 'admin', res)
+})
 
 // user verification route
 router.get('/verify-email', async (req, res, next)=>{
@@ -103,57 +95,34 @@ router.post('/reset-password', async (req, res)=> {
             })
         }
     }catch(e){
-
+        res.status(500).json({
+            message: 'password can not be reset. please check your details'
+        })
     }
-    // const {passwordToken, newPass} = req.body;
-    // if(passwordToken) {
-    //     jwt.verify(passwordToken, process.env.RESET_LINK_TOKEN, function(err, decodedDdata){
-    //         if(err){
-    //             res.status(401).json({
-    //                 error: 'incorrect token or is expired'
-    //             })
-    //         }
-
-    //         User.findOne({passwordToken}, function(err, user){
-    //             if(err || !user){
-    //                 res.status(404).json({
-    //                     error:'User does not exist'
-    //                 })
-    //             }else{
-    //                 const obj = {
-    //                     password: newPass,
-    //                     passwordToken: ''
-    //                 }
-
-    //                 user = _.extend(user, obj)
-    //                 user.save((err, data)=>{
-    //                     if(err){
-    //                         res.status(401).json({message:'reset link password error'})
-    //                     }else{
-    //                         res.status(200).json({message:"password has been reset successfully"})
-    //                     }
-    //                 })
-    //             }
-    //         })
-    //     })
-    // }else{
-    //     res.status(401).json({error: "authentication Error!!!"})
-    // }
 })
 
 // login user
 router.post('/login', async(req, res) => {
-    try{
-        const user = await User.findByCredentials(req.body.username, req.body.password)
-        const token = await user.generateAuthToken();
+    await userLogin(req.body, 'users', res)
+})
+// login user(admin route)
+router.post('/login-admin',  async (req, res)=> {
+    await userLogin(req.body, 'admin', res)
+})
 
-        res.status(202).send({ user, token })
+// user(users  and admin viewing their profile)
+router.get('/me', auth, async (req, res) => {
+    res.status(200).json
+    ({
+        ...req.user,
+        message: 'view your profile',
+        success: true
+    })
+})
 
-    }catch(e) {
-        res.status(404).send({
-            error: 'invalid users'
-        })
-    }
+// admin getting total amount of users
+router.get('/get-all users', auth, async(req, res)=>{
+    await userCount('admin', res)
 })
 
 // User logout
@@ -187,8 +156,6 @@ router.post('/me/logoutall', auth, async(req, res)=> {
         res.send(e)
     }
 })
-
-// 
 
 // updating user password or profile
 router.patch('/me/update', auth, async (req, res)=>{

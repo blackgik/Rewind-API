@@ -1,4 +1,6 @@
 const sgMail = require('@sendgrid/mail');
+const fs = require('fs')
+const path = require('path');
 
 
 // setting the sendGrid_Api_KEY
