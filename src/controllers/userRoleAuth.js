@@ -71,13 +71,12 @@ const userLogin = async (userCreds, role, res)=> {
             return res.status(404).json({
                 message:'please check you mail to verify your account',
                 success: false
-            })
-            
+            })   
         }
 
         if(user.role !== role) {
             return res.status(400).json({
-                message: 'please ensure you loggin as the correct user',
+                message: 'please ensure you are logged in as the correct user',
                 success: false
             })
         }

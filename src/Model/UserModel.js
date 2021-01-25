@@ -65,6 +65,12 @@ const UserSchema = new mongoose.Schema({
     isVerified: {
         type: Boolean,
         default: false
+    },
+
+    role: {
+        type: String,
+        default: 'users',
+        enum: ['users', 'admin']
     }
 }, {
     timestamps: true
