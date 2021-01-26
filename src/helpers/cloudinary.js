@@ -16,7 +16,9 @@ exports.uploads = (file) => {
       (movie) => {
         resolve(movie);
       },
-      { resource_type: "auto" }
+      { resource_type: "auto",
+        folder: "rewind"
+    }
     );
   });
 };
