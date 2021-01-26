@@ -6,11 +6,11 @@ BASE_URL: https://rewind-test.herokuapp.com/
 
 fields:
 
-name,
+coverpics_url,
+movie_url,
 title,
 description,
-url,
-id
+release_date
 
 UPLOAD_ROUTE: https://rewind-test.herokuapp.com/upload
 
