@@ -123,6 +123,7 @@ router.get('/', function(req, res, next) {
     })
   })
 
+  /* Search movie */
   router.get('/movie/search', (req, res) => {
     var data = req.query
  
