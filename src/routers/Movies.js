@@ -26,12 +26,12 @@ router.post('/upload', upload.any(), function(req, res, next) {
               console.log(data)
               Movie.create(data, (error, movie) => {
                 if (error) {
-                    return res.json({
+                    return res.send({
                         success: false,
                         error: error
                     })
                 } else {
-                    return res.json({
+                    return res.send({
                         success: true,
                         message: movie
                     })
@@ -40,12 +40,11 @@ router.post('/upload', upload.any(), function(req, res, next) {
               })
             })
         } catch(error){
-          return res.json({
+          return res.send({
             success: false,
             message: error
           })
         }
-        
  });
 
 /* Edit A Movie Entry*/
@@ -87,7 +86,6 @@ router.get('/', function(req, res, next) {
           })
       }
   })
-  console.log("text me")
   });
 
   /* Get A Movie */
@@ -134,13 +132,13 @@ router.get('/', function(req, res, next) {
     
       .then(result => {
           console.log(result);
-          res.status(200).json({
+          res.status(200).send({
             success: true,
               result
           })
       })
       .catch(err => {
-          res.status(500).json({
+          res.status(500).send({
               success: false,
               error: err
        });
