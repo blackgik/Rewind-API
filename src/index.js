@@ -1,10 +1,12 @@
 const express = require ('express')
-require('./db/mongoose')
-const routes = require('./routes')
 const cors = require('cors');
-const dotenv = require("dotenv");
-
-dotenv.config();
+const passport = require('passport')
+var cookieSession = require('cookie-session')
+/** calling the local modules */
+require('./db/mongoose')
+// const UserRouter = require('./routers/Users')
+const ThirdPartyRouter = require('./routers/thirdParty')
+const UserRoutes = require('./routes/index')
 
 const app = express()
 
@@ -13,9 +15,17 @@ const port = process.env.PORT
 
 // serving up the json file and the routes
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cors());
-app.use(routes);
+app.use(cors())
+app.use(cookieSession({
+    name: 'rewind-session',
+    keys: ['key1', 'key2']
+  }))
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use(UserRoutes);
+app.use(ThirdPartyRouter);
+
 
 
 // serving up the server on the port

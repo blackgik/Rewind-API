@@ -3,9 +3,9 @@ var express = require('express');
 var userRouter = require('../routers/Users');
 var movieRouter = require('../routers/Movies');
 
-var app = express();
+var route = express();
 
-app.use('/', movieRouter);
-app.use('/users', userRouter);
+route.use('/', movieRouter);
+route.use('/users', userRouter);
 
-module.exports = app;
+module.exports = route;

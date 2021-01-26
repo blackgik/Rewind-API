@@ -1,6 +1,7 @@
+const crypto = require('crypto');
 const User = require('../Model/UserModel')
 const {verificationEmail} = require('../services/emailVerify')
-const crypto = require('crypto');
+ 
 /**
  * 
  * @desc assigning roles to users (admin, users)
@@ -68,7 +69,7 @@ const userLogin = async (userCreds, role, res)=> {
 
         if(!user.isVerified) {
             verificationEmail(user.email, user.emailToken, user.username)
-            return res.status(404).json({
+            return res.status(400).json({
                 message:'please check you mail to verify your account',
                 success: false
             })   

@@ -1,5 +1,7 @@
 const express = require('express');
-const crypto = require('crypto')
+const crypto = require('crypto');
+const sharp = require('sharp')
+const multer = require('multer')
 const _ = require('lodash')
 const jwt = require('jsonwebtoken')
 const User = require('../Model/UserModel');
@@ -7,7 +9,9 @@ const auth = require('../middleware/auth')
 const { verificationEmail, sendWelcomeEmail, sendEmailCancelation } = require('../services/emailVerify')
 const { sendPasswordEmailChange } = require('../services/passwordchange')
 const router = new express.Router()
-const {userRegistration, userLogin, userCount} = require('../controllers/userRoleAuth')
+const { userRegistration, userLogin, userCount, } = require('../controllers/userRoleAuth');
+const e = require('express');
+const { post } = require('../routes');
 
 
 // creating the user sign-up route
@@ -16,7 +20,7 @@ router.post('/sign-up', async (req, res)=>{
 });
 
 // admin registration 
-router.post('/users/admin-sign-up', async(req, res)=>{
+router.post('/admin-sign-up', async(req, res)=>{
     await userRegistration(req.body, 'admin', res)
 })
 
@@ -114,7 +118,7 @@ router.post('/login-admin',  async (req, res)=> {
 router.get('/me', auth, async (req, res) => {
     res.status(200).json
     ({
-        user:req.user,
+        profile: req.user,
         message: 'view your profile',
         success: true
     })
@@ -179,6 +183,77 @@ router.patch('/me/update', auth, async (req, res)=>{
             "message": "failed to update"
         })
     }
+})
+
+/**
+ * 
+ * @desc serving up the profile picture 
+ */
+//  setting profile restriction
+const upload = multer({
+    limits: {
+        fileSize: 2000000
+    },
+
+    fileFilter(req, file, cb) {
+       if(!file.originalname.match(/\.(jpg|jpeg|png|svg)$/gm)){
+           cb(new Error('file format is not accepted'))
+       }
+
+       cb(undefined, true)
+    }
+})
+
+// creating the user profile picture
+router.post('/me/avatar', auth, upload.single('avatar'), async (req, res)=> {
+    const buffer = await sharp(req.file.buffer).resize({ width:350, height: 350}).png().toBuffer()
+    req.user.avatar = buffer;
+
+    await req.user.save()
+    res.json({
+        success: true
+    })
+}, (error, req, res, next) => {
+    res.status(400).json({
+        error: error.message
+    })
+})
+
+// serving the profile picture
+router.get('/:id/avatar', async (req, res)=> {
+    try{
+        const user = await User.findById(req.params.id)
+
+        if(!user || !user.avatar) {
+            throw new Error('user does not exist or does not have access to an avatar')
+        }
+
+        res.set('Content-Type', 'image/png')
+            res.status(200).send(user.avatar)
+    }catch(e) {
+        res.status(400).json({
+            message:'unable to serve up profile picture'
+        })
+    }
+}, (error,req, res, next)=> {
+    res.status(400).json({
+        error: error.message
+    })
+})
+
+// deleting profile picture
+router.delete('/me/avatar', auth, async (req, res)=> {
+    req.user.avatar = null
+    await req.user
+
+    res.status(200).json({
+        message:'profile picture has been deleted successfully',
+        success: true
+    })
+}, (e, req, res, next)=> {
+    res.status(400).json({
+        error:e.message
+    })
 })
 
 // exporting the routes
