@@ -173,13 +173,12 @@ router.patch('/me/update', auth, async (req, res)=>{
 
     try{
         updates.forEach((update)=> req.user[update] = req.body[update] )
-        // ensure that the updated password is updated withe the confirm password
         req.user.confirmPassword = req.user.password
-
         await req.user.save()
 
         res.status(200).send(req.user)
     }catch(e) {
+        console.log(e)
         res.status(400).json({
             "message": "failed to update"
         })
