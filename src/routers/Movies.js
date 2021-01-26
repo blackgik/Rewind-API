@@ -124,7 +124,7 @@ router.get('/', function(req, res, next) {
   })
 
   /* Search movie */
-  router.get('/movie/search', (req, res) => {
+  router.get('/search', (req, res) => {
     var data = req.query
  
     console.log(data)
