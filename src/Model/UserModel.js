@@ -65,6 +65,16 @@ const UserSchema = new mongoose.Schema({
     isVerified: {
         type: Boolean,
         default: false
+    },
+
+    role: {
+        type: String,
+        default: 'users',
+        enum: ['users', 'admin']    
+    },
+
+    avatar: {
+        type: Buffer,
     }
 }, {
     timestamps: true
@@ -80,6 +90,7 @@ UserSchema.methods.toJSON = function(){
    delete userObject.emailToken
    delete userObject.confirmPassword
    delete userObject.passwordToken
+   delete userObject.avatar
    
    return userObject
 }

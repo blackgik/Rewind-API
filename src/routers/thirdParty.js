@@ -2,7 +2,7 @@ const express = require('express');
 const passport = require('passport')
 const router = new express.Router();
 require('../services/googleValidation')
-require('../services/facbookValidation')
+require('../services/facebookValidation')
 
 
 /**  
@@ -57,7 +57,7 @@ router.get('/google/callback',
  * FACEBOOK VALIDATION
  **/ 
 // confirming that the user exist on the facebok platform
-router.get('/facebook', passport.authenticate('facebook', {scope: 'email'}))
+router.get('/facebook', passport.authenticate('facebook', {scope: ['email', 'profile']}))
 
 // validating or authenticating the user
 router.get('/facebook/callback', 
