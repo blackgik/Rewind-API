@@ -3,11 +3,11 @@ var mongoose = require('mongoose');
 const movieSchema = new mongoose.Schema({
     coverpics_url: {
         type: String,
-        required: true
+        required: false
     },
     movie_url: {
         type: String,
-        required: true
+        required: false
     },
     title: {
         type: String,
@@ -21,6 +21,12 @@ const movieSchema = new mongoose.Schema({
     release_date: {
         type: String,
         required: true
+    },
+
+    owner: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'User',
     }
 },
 {

@@ -80,6 +80,13 @@ const UserSchema = new mongoose.Schema({
     timestamps: true
 })
 
+// creating a virtual point to store the movies created by the users
+UserSchema.virtual('movies', {
+    ref:'Movie',
+    localField: '_id',
+    foreignField: 'owner'
+})
+
 // hide certain details like password tokens etc 
 UserSchema.methods.toJSON = function(){
     const user = this
