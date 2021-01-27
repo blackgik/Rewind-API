@@ -4,10 +4,6 @@ const passport = require('passport')
 var cookieSession = require('cookie-session')
 /** calling the local modules */
 require('./db/mongoose')
-// const UserRouter = require('./routers/Users')
-const ThirdPartyRouter = require('./routers/thirdParty')
-const UserRoutes = require('./routes/index')
-
 const app = express()
 
 // creating the server port
@@ -22,11 +18,6 @@ app.use(cookieSession({
   }))
 app.use(passport.initialize());
 app.use(passport.session());
-
-app.use(UserRoutes);
-app.use(ThirdPartyRouter);
-
-
 
 // serving up the server on the port
 app.listen(port, ()=> {

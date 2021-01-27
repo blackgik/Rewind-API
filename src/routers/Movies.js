@@ -58,10 +58,8 @@ router.post('/upload', auth,  upload.any(), async function(req, res, next) {
  });
 
 /* Edit A Movie Entry*/
-router.put('/edit/:id', function(req, res, next) {
+router.post('/edit/:id', function(req, res, next) {
     data = {
-      coverpics_url: req.files[0].path,
-      movie_url:req.files[1].path,
       title: req.body.title,
       description: req.body.description,
       release_date: req.body.release_date,
@@ -102,7 +100,8 @@ router.get('/', function(req, res, next) {
 
   /* Get A Movie */
   router.get('/:id', function(req, res, next) {
-    Movie.findById({_id: req.params.id}, (error, movie) => {
+    var data = req.query
+    Movie.find({_id: req.params.id}, (error, movie) => {
       if (error) {
           return res.send({
               success: false,
@@ -118,7 +117,7 @@ router.get('/', function(req, res, next) {
   });
 
   /* Delete Movie */
-  router.delete('/delete/:id', function(req, res, next) {
+  router.delete('/delete/:id', (req, res, next) => {
     Movie.findOneAndDelete({_id: req.params.id}, (error, movie) => {
       if (error) {
         return res.send({
@@ -133,5 +132,28 @@ router.get('/', function(req, res, next) {
       }
     })
   })
+
+  /* Search movie */
+  router.get('/search', (req, res) => {
+    var data = req.query
+ 
+    console.log(data)
+
+    Movie.find(data)
+    
+      .then(result => {
+          console.log(result);
+          res.status(200).send({
+            success: true,
+              result
+          })
+      })
+      .catch(err => {
+          res.status(500).send({
+              success: false,
+              error: err
+       });
+    });
+  });
   
 module.exports = router;

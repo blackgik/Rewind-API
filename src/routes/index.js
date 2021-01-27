@@ -2,10 +2,13 @@ var express = require('express');
 
 var userRouter = require('../routers/Users');
 var movieRouter = require('../routers/Movies');
+var ThirdPartyRouter = require('../routers/thirdParty');
+
 
 var route = express();
 
-route.use('/', movieRouter);
+route.use('/movies', movieRouter);
 route.use('/users', userRouter);
+route.use(ThirdPartyRouter);
 
 module.exports = route;
