@@ -9,6 +9,6 @@ var route = express();
 
 route.use('/movies', movieRouter);
 route.use('/users', userRouter);
-route.use(ThirdPartyRouter);
+route.use('/auth', ThirdPartyRouter);
 
 module.exports = route;
