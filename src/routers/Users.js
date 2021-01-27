@@ -256,5 +256,16 @@ router.delete('/me/avatar', auth, async (req, res)=> {
     })
 })
 
+// deleting a user
+router.delete('/users/me', auth,  async  (req, res)=> {
+    try{
+        await req.user.remove()
+        res.send(req.user)
+    } catch (e) {
+        res.status(500).send()
+    }
+})
+
+
 // exporting the routes
 module.exports = router
