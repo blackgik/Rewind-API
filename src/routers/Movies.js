@@ -82,9 +82,20 @@ router.post('/edit/:id', auth,  function(req, res, next) {
 });
 
 /* Get All Movies */
+
+// users getting the saaves by them
 router.get('/', auth,  async function(req, res, next) {
+  const match = {}
+
+  if(req.query.movie_search) {
+    match.movie_search = req.query.movie_search
+  }
+
   try{
-    await req.user.populate('movies').execPopulate()
+    await req.user.populate({
+      path: 'movies',
+      match
+    }).execPopulate()
     res.status(200).json({
       movies: req.user.movies,
       success: true
@@ -96,6 +107,27 @@ router.get('/', auth,  async function(req, res, next) {
     })
   }
 
+})
+
+// user getting all movies
+router.get('/movies-all', async (req, res) => {
+  try {
+    const movies = await User.find({})
+    res.status(200).json({
+      messages: 'fetching all movies',
+      movies,
+      success: true
+    })
+  }catch{
+    res.status(400).json({
+      message: 'unable to fetch all movies',
+      success: false
+    })
+  }
+}, (err, req, res, next)=> {
+  res.status(400).json({
+    message: err.message
+})
 })
   
   /* Get A Movie */

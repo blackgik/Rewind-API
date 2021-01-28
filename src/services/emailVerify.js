@@ -13,7 +13,10 @@ const verificationEmail = async  (email, emailToken, username)=> {
     console.log(emailToken)
     const msg ={
         to:email,
-        from: 'c.echendu@genesystechhub.com',
+        from: {
+            email: 'c.echendu@genesystechhub.com',
+            name: 'REWIND',
+        },
         subject: 'VERIFY YOUR EMAIL',
         text:`
             thanks for registrating on Rewind website. Before we take you on the nostalgic experience,
@@ -39,7 +42,10 @@ const verificationEmail = async  (email, emailToken, username)=> {
 const sendWelcomeEmail = async (userEmail, username)=> {
     const msg = {
         to: userEmail,
-        from:'c.echendu@genesystechhub.com',
+        from: {
+            email: 'c.echendu@genesystechhub.com',
+            name: 'REWIND',
+        },
         subject: 'WELCOME TO REWIND',
         text: `$
             Hello {username}, 
@@ -63,7 +69,10 @@ const sendEmailCancelation = async (email, name)=>{
     try{
         await sgMail({
         to:email,
-        from:'c.echendu@genesystechhub.com',
+        from: {
+            email: 'c.echendu@genesystechhub.com',
+            name: 'REWIND',
+        },
         subject: 'USER LOGOUT NOTIFICATION',
         text: `Hey ${name} we noticed you logout on your device, \n anything we could done to be better?`,
         html: `Hey ${name} we noticed you logout on your device, \n anything we could done to be better?`

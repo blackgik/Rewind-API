@@ -67,13 +67,13 @@ const userLogin = async (userCreds, role, res)=> {
         const {username, password} = userCreds
         const user = await User.findByCredentials(username, password)
 
-        if(!user.isVerified) {
-            verificationEmail(user.email, user.emailToken, user.username)
-            return res.status(400).json({
-                message:'please check you mail to verify your account',
-                success: false
-            })   
-        }
+        // if(!user.isVerified) {
+        //     verificationEmail(user.email, user.emailToken, user.username)
+        //     return res.status(400).json({
+        //         message:'please check you mail to verify your account',
+        //         success: false
+        //     })   
+        // }
 
         if(user.role !== role) {
             return res.status(400).json({

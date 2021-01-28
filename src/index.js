@@ -1,7 +1,8 @@
 const express = require ('express')
 const cors = require('cors');
 const passport = require('passport')
-var cookieSession = require('cookie-session')
+const cookieSession = require('cookie-session')
+const UserRoute = require('./routes/index')
 /** calling the local modules */
 require('./db/mongoose')
 const app = express()
@@ -18,6 +19,7 @@ app.use(cookieSession({
   }))
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(UserRoute)
 
 // serving up the server on the port
 app.listen(port, ()=> {
