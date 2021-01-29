@@ -104,8 +104,8 @@ UserSchema.methods.toJSON = function(){
 }
 
 // verify user login
-UserSchema.statics.findByCredentials = async (username, password)=> {
-    const user = await User.findOne({ username })
+UserSchema.statics.findByCredentials = async (email, password)=> {
+    const user = await User.findOne({ email })
 
     if(!user) {
         throw new Error('invalid user login details')

@@ -118,7 +118,7 @@ router.get('/movies-all', async (req, res) => {
       movies,
       success: true
     })
-  }catch{
+  }catch {
     res.status(400).json({
       message: 'unable to fetch all movies',
       success: false
