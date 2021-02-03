@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const validator = require('validator')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const Movie = require('../Model/MoviesModel')
 require('../db/mongoose')
 
 
@@ -103,8 +104,8 @@ UserSchema.methods.toJSON = function(){
 }
 
 // verify user login
-UserSchema.statics.findByCredentials = async (username, password)=> {
-    const user = await User.findOne({ username })
+UserSchema.statics.findByCredentials = async (email, password)=> {
+    const user = await User.findOne({ email })
 
     if(!user) {
         throw new Error('invalid user login details')
@@ -140,6 +141,15 @@ UserSchema.pre('save', async function(next) {
             throw new Error('passwords do not match')
         }
     }
+
+    next()
+})
+
+// deleting everymovie when user has deleted his account
+
+UserSchema.pre('remove', async function(next) {
+    const user = this
+    await Movie.findMany({owner:user._id})
 
     next()
 })

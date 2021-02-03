@@ -256,5 +256,39 @@ router.delete('/me/avatar', auth, async (req, res)=> {
     })
 })
 
+// deleting a user
+router.delete('/users/me', auth,  async  (req, res)=> {
+    try{
+        await req.user.remove()
+        res.send(req.user)
+    } catch (e) {
+        res.status(500).send()
+    }
+})
+
+// getting one user from the userbase:
+router.get('/user', async(req, res)=> {
+    try{
+        const Userarray = []
+        const user = await User.find({})
+        Userarray.push(user)
+
+        const randomUser = Math.floor(Math.random() * Userarray.length)
+
+        res.status(200).json({
+            user: Userarray[randomUser],
+            success: true
+        })
+    }catch(e) {
+        res.status(400).json({
+            success: false,
+            message: 'can not filter the array'
+        })
+    }
+
+    
+})
+
+
 // exporting the routes
 module.exports = router

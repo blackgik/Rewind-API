@@ -1,7 +1,7 @@
 const express = require ('express')
 const cors = require('cors');
 const passport = require('passport')
-var cookieSession = require('cookie-session')
+const cookieSession = require('cookie-session')
 /** calling the local modules */
 require('./db/mongoose')
 const routes = require('./routes')
