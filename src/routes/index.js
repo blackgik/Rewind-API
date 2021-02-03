@@ -11,4 +11,7 @@ route.use('/movies', movieRouter);
 route.use('/users', userRouter);
 route.use('/auth', ThirdPartyRouter);
 
+// Add documentation
+//route.use('*', docs);
+
 module.exports = route;
