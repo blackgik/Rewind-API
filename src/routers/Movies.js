@@ -17,9 +17,10 @@ router.post("/upload", upload.any(), async(req, res, next) => {
     description: req.body.description,
     release_date: req.body.release_date,
     cast: req.body.cast,
-    timestamps: Date.now(),
-    owner: req.user._id
+    timestamps: Date.now()
   };
+
+  console.log(data);
 
   try {
   await cloud.uploads(data.coverpics_url).then((img_metadata) => {
@@ -49,10 +50,6 @@ router.post("/upload", upload.any(), async(req, res, next) => {
       message: error,
     });
   }
-  return res.json({
-    success: false,
-    message: "You are not authorized to access this route"
-  })
 });
 
 /* Edit A Movie Entry*/
