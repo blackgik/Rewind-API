@@ -15,7 +15,7 @@ const {verificationEmail} = require('../services/emailVerify')
 const userRegistration = async (userDet, role, res) => {
     try{
         // username validation
-        const usernameNotTaken = await usernameValidation(userDet.username);
+        const usernameNotTaken = await usernameValidation(userDet.username, role);
         if(!usernameNotTaken) {
             res.status(400).json({
                 message: 'username already exist',
@@ -24,7 +24,7 @@ const userRegistration = async (userDet, role, res) => {
         }
 
         // email validation
-        const userEmailNotTaken = await emailValidation(userDet.email)
+        const userEmailNotTaken = await emailValidation(userDet.email, role)
         if(!userEmailNotTaken) {
             res.status(400).json({
                 message: 'userEmail has been taken',
@@ -38,6 +38,14 @@ const userRegistration = async (userDet, role, res) => {
             emailToken: crypto.randomBytes(64).toString('hex'),
             isVerified: false
         })
+        if (userDet.email.includes('.')){
+            const username = userDet.email.split('.')[0]
+        }else{
+            const username = userDet.email.split('@')[0]
+        }
+        
+        // console.log(username)
+        newUser.username = username
         await newUser.save()
         verificationEmail(newUser.email, newUser.emailToken, newUser.username)
         const token = newUser.generateAuthToken()
@@ -129,15 +137,75 @@ const userLogin = async (userCreds, role, res)=> {
      }
  }
 
+/**
+ * @desc validationg user for password
+ * 
+ * */
+
+ const forgotPassword = async (userDet, res)=>{
+    try{
+        const { email } = userDet;
+        const user = await User.findOne({ email })
+        
+        if(!user) {
+            res.status(401).json({message:"user does not exist"})
+        }
+
+        token = jwt.sign({id:user._id.toString()}, process.env.RESET_LINK_TOKEN, {expiresIn: "20m"})
+
+        sendPasswordEmailChange(user.email, user.username, token)
+
+        user.passwordToken = token
+        await user.save()
+        res.status(200).json({message: 'token has been updated'})
+    }catch(e){
+        res.status(400).json({
+            err: 'reset link failed'
+        })
+    }
+}
+
+/**
+ * 
+ * @desc reseting password link
+ * */ 
+
+ const resetPassword = async (userDet, res)=> {
+    try{
+        const passToken = req.query.token
+        const { newPass, confirmPass} = userDet
+        if(passToken) {
+            jwt.verify(passToken, process.env.RESET_LINK_TOKEN, async (err, data)=> {
+                if(err) {
+                    res.status(401).json({error:"incorrect token or has expired"})
+                }
+                const user = await User.findOne({passwordToken: passToken})
+                if (user){
+                    user.password = newPass
+                    user.confirmPassword = confirmPass
+                    await user.save
+                    res.status(200).json({message:'password has been reset'})
+                }else{
+                    res.status(404).json({err:'user does not exist'})
+                }
+            })
+        }
+    }catch(e){
+        res.status(500).json({
+            message: 'password can not be reset. please check your details'
+        })
+    }
+}
+
 // username validation 
-const usernameValidation = async (username)=> {
-    const user = await User.findOne({ username })
+const usernameValidation = async (username, role)=> {
+    const user = await User.findOne({ username, role:role })
     return user ? false : true
 }
 
 // email validation
-const emailValidation = async (email)=> {
-    const user = await User.findOne({ email })
+const emailValidation = async (email, role)=> {
+    const user = await User.findOne({ email, role:role })
     return user ? false : true
 }
 
@@ -146,4 +214,6 @@ module.exports = {
     userRegistration,
     userLogin,
     userCount,
+    forgotPassword,
+    resetPassword,
 }

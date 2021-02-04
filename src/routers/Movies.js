@@ -45,8 +45,8 @@ router.post("/:id/upload", upload.any(), async(req, res, next) => {
       message: error,
     });
   }
-});
-
+}
+            
 /* Edit A Movie Entry*/
 router.post("/edit/:id",  async(req, res, next) => {
   const options = { new: true, runValidators: true}

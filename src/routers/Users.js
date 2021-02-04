@@ -9,12 +9,12 @@ const auth = require('../middleware/auth')
 const { verificationEmail, sendWelcomeEmail, sendEmailCancelation } = require('../services/emailVerify')
 const { sendPasswordEmailChange } = require('../services/passwordchange')
 const router = new express.Router()
-const { userRegistration, userLogin, userCount, } = require('../controllers/userRoleAuth');
+const { userRegistration, userLogin, userCount, forgotPassword, resetPassword } = require('../controllers/userRoleAuth');
 const e = require('express');
 const { post } = require('../routes');
 
 
-// creating the user sign-up route
+// creating the user 
 router.post('/sign-up', async (req, res)=>{
     await userRegistration(req.body, 'users', res)
 });
@@ -24,8 +24,9 @@ router.post('/admin-sign-up', async(req, res)=>{
     await userRegistration(req.body, 'admin', res)
 })
 
-// user verification route
-router.get('/verify-email', async (req, res, next)=>{
+// route to verify email
+router.get('/verify-email', async(req, res)=> {
+
     try {
         const verifiedToken = req.query.token
     
@@ -52,57 +53,17 @@ router.get('/verify-email', async (req, res, next)=>{
         res.status(400).json({"message":'user with token does not exist', "error": e})
     }
 
+
 })
 
-// forgot password route
-router.post('/forgotPassword', async (req, res)=>{
-    try{
-        const { email } = req.body;
-        const user = await User.findOne({ email })
-        
-        if(!user) {
-            res.status(401).json({message:"user does not exist"})
-        }
-
-        token = jwt.sign({id:user._id.toString()}, process.env.RESET_LINK_TOKEN, {expiresIn: "20m"})
-
-        sendPasswordEmailChange(user.email, user.username, token)
-
-        user.passwordToken = token
-        await user.save()
-        res.status(200).json({message: 'token has been updated'})
-    }catch(e){
-        res.status(400).json({
-            err: 'reset link failed'
-        })
-    }
+// user forgot-password route
+router.post('/forgot-password', async (req, res, next)=>{
+    await forgotPassword(req.body, res)
 })
 
-// reseting password
+// password reset link
 router.post('/reset-password', async (req, res)=> {
-    try{
-        const { passToken, newPass, confirmPass} = req.body
-        if(passToken) {
-            jwt.verify(passToken, process.env.RESET_LINK_TOKEN, async (err, data)=> {
-                if(err) {
-                    res.status(401).json({error:"incorrect token or has expired"})
-                }
-                const user = await User.findOne({passwordToken: passToken})
-                if (user){
-                    user.password = newPass
-                    user.confirmPassword = confirmPass
-                    await user.save
-                    res.status(200).json({message:'password has been reset'})
-                }else{
-                    res.status(404).json({err:'user does not exist'})
-                }
-            })
-        }
-    }catch(e){
-        res.status(500).json({
-            message: 'password can not be reset. please check your details'
-        })
-    }
+    await resetPassword(req.body, res)
 })
 
 // login user
@@ -161,7 +122,7 @@ router.post('/me/logoutall', auth, async(req, res)=> {
     }
 })
 
-// updating user password or profile
+// profile update route
 router.patch('/me/update', auth, async (req, res)=>{
     const updates = Object.keys(req.body)
     const allowableupdate = ['username', 'email', 'password']
@@ -185,10 +146,12 @@ router.patch('/me/update', auth, async (req, res)=>{
     }
 })
 
+
 /**
  * 
  * @desc serving up the profile picture 
  */
+
 //  setting profile restriction
 const upload = multer({
     limits: {
