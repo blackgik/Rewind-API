@@ -47,6 +47,23 @@ router.post('/edit/:id', async(req, res, next) => {
     }
 })
 
+/* Get all categories */
+router.get('/all', async(req, res, next) => {
+    try {
+    var categories = await Category.find({})
+
+        return res.send({
+            success: true,
+            message: categories
+        })
+    } catch (error){
+        return res.send({
+            success: false,
+            message: error
+        })
+    }
+}) 
+
 /* Delete a Category */
 router.delete('/delete/:id', async(req, res, next) => {
     try {
