@@ -84,7 +84,7 @@ router.post('/edit/:id', auth,  function(req, res, next) {
 /* Get All Movies */
 
 // users getting the saaves by them
-router.get('/', auth,  async function(req, res, next) {
+router.get('/auth/all-movies', auth,  async function(req, res, next) {
   const match = {}
 
   if(req.query.movie_search) {
@@ -139,7 +139,7 @@ router.get('/:id', async function(req, res) {
 
     if(!movie) {
       res.status(404).json({
-        message: 'movie was found successfully',
+        message: 'movie was not found',
         success: false
       })
     }
