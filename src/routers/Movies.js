@@ -8,10 +8,13 @@ require('express-async-errors');
 const auth = require('../middleware/auth')
 const Movie = require("../Model/MoviesModel");
 const User = require('../Model/UserModel');
+const Category = require('../Model/CategoryModel');
 const cloud = require("../helpers/cloudinary");
 const upload = multer({ dest: "./src/files" });
+
+
 /* Create Movie */
-router.post("/upload", upload.any(), async(req, res, next) => {
+router.post("/:id/upload", upload.any(), async(req, res, next) => {
   var data = {
     coverpics_url: req.files[0].path,
     movie_url: req.files[1].path,
@@ -19,17 +22,15 @@ router.post("/upload", upload.any(), async(req, res, next) => {
     description: req.body.description,
     release_date: req.body.release_date,
     cast: req.body.cast,
+    category: req.params.id,
     timestamps: Date.now()
   };
-
-  console.log(data);
 
   try {
   await cloud.uploads(data.coverpics_url).then((img_metadata) => {
       data.coverpics_url = img_metadata.secure_url;
       cloud.uploads(data.movie_url).then((vid_metadata) => {
         data.movie_url = vid_metadata.secure_url;
-        console.log(data);
 
         var movie = Movie.create(data)
             return res.json({
@@ -48,7 +49,8 @@ router.post("/upload", upload.any(), async(req, res, next) => {
 
 /* Edit A Movie Entry*/
 router.post("/edit/:id",  async(req, res, next) => {
-  data = {
+  const options = { new: true, runValidators: true}
+  var data = {
     title: req.body.title,
     description: req.body.description,
     release_date: req.body.release_date,
@@ -56,24 +58,55 @@ router.post("/edit/:id",  async(req, res, next) => {
     timestamps: Date.now(),
   };
 
-  var movie = await Movie.findByIdAndUpdate({ _id: req.params.id }, data) 
+  try {
+  var movie = await Movie.findById({ _id: req.params.id }, data, options) 
       return res.send({
         success: true,
         message: movie,
       });
+    } catch (error){
+      return res.send({
+        success: false,
+        message: error
+      })
+    }
 });
 
 /* Get All Movies */
 router.get("/", async(req, res, next) => {
-  var movie = await Movie.find({})
+  try {
+  var movies = await Movie.find({})
       return res.send({
         success: true,
-        message: movie,
+        message: movies,
       });
+    } catch (error){
+      return res.send({
+        success: false,
+        message: error
+      })
+    }
 });
+
+/* Get all movies in a category */
+router.get('/:id/all', async(req, res, next) => {
+  try {
+  var movies = await Movie.find({category: req.params.id}).populate('Category')
+    return res.send({
+      success: true,
+      message: movies
+    })
+  } catch(error){
+    return res.send({
+      success: false,
+      message: error
+    })
+  }
+})
 
 /* Get A Movie */
 router.get("/:id", async(req, res, next) => {
+  try {
   var movie = await Movie.find({ _id: req.params.id })
   if(!movie){
     return res.send({
@@ -86,15 +119,28 @@ router.get("/:id", async(req, res, next) => {
         message: movie,
       });
   }
+} catch (error){
+  return res.send({
+    success: false,
+    message: error
+  })
+}
 });
 
 /* Delete Movie */
 router.delete("/delete/:id", async(req, res, next) => {
+  try {
  var movie = await Movie.findOneAndDelete({ _id: req.params.id })
       return res.send({
         success: true,
         message: movie,
       });
+    } catch (error){
+      return res.send({
+        success: false,
+        message: error
+      })
+    }
 });
 
 /* Search Movie */
