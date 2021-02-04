@@ -12,7 +12,6 @@ const movieSchema = new mongoose.Schema({
     title: {
         type: String,
         required: true,
-        unique: true
     },
     description: {
         type: String,
@@ -31,11 +30,17 @@ const movieSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         required: false,
         ref: 'User',
+    },
+    category: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: false
     }
 },
 {
     timestamps: true
 }
 )
+
+movieSchema.index({ title: 'text'});
 
 module.exports = mongoose.model('Movie', movieSchema);

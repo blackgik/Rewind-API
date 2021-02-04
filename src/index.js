@@ -2,6 +2,7 @@ const express = require ('express')
 const cors = require('cors');
 const passport = require('passport')
 const cookieSession = require('cookie-session')
+require('express-async-errors');
 /** calling the local modules */
 require('./db/mongoose')
 const routes = require('./routes')
