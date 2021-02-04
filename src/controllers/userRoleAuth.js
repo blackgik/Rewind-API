@@ -38,8 +38,13 @@ const userRegistration = async (userDet, role, res) => {
             emailToken: crypto.randomBytes(64).toString('hex'),
             isVerified: false
         })
-        const username = userDet.email.split('.')[0]
-        console.log(username)
+        if (userDet.email.includes('.')){
+            const username = userDet.email.split('.')[0]
+        }else{
+            const username = userDet.email.split('@')[0]
+        }
+        
+        // console.log(username)
         newUser.username = username
         await newUser.save()
         verificationEmail(newUser.email, newUser.emailToken, newUser.username)
