@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 
 router.get('/', (req, res) => {
-  res.redirect('https://rewind.netlify.app/');
+  res.redirect('https://rewind-apidocs.netlify.app/');
 });
 
 module.exports = router;
