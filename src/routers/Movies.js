@@ -144,9 +144,8 @@ router.delete("/delete/:id", async(req, res, next) => {
 });
 
 /* Search Movie */
-router.get("/search/movie", async(req, res, next) => {
+router.get("/search", async(req, res, next) => {
   var data = new RegExp(req.query.q, 'gi');
-
   try {  
   var movies = await Movie.find({$text: {$search: data}});  
   //check if movie is not found 
