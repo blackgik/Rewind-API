@@ -713,7 +713,7 @@ define({ "api": [
   },
   {
     "type": "get",
-    "url": "movies/search/movie?q=title",
+    "url": "movies/search?q=title",
     "title": "Search",
     "description": "<p>Search for a movie</p>",
     "name": "Search_Movie",

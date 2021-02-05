@@ -141,7 +141,7 @@
  */
 
  /**
- * @api {get} movies/search/movie?q=title Search
+ * @api {get} movies/search?q=title Search
  * @apiDescription Search for a movie
  * @apiName Search Movie
  * @apiGroup Movies
