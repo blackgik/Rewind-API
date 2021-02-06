@@ -26,7 +26,7 @@ router.post('/new', async(req, res, next) => {
 })
 
 /* Edit a category */
-router.post('/edit/:id', async(req, res, next) => {
+router.put('/edit/:id', async(req, res, next) => {
     const options = { new: true, runValidators: true}
     var data = {
         title: req.body.title

@@ -81,8 +81,9 @@ Rewind-API
             |___services (authenticating the users with the third party verification)
             |
             |
-            |___index.js --serving the routes to the server..
-
+            |___index.js --serving the routes to the server.
+            
+.....................................................................................................
 App Deployed on the web>
 SRC: https://rewind-api.herokuapp.com/
 

@@ -46,10 +46,9 @@ router.post("/:id/upload", upload.any(), async(req, res, next) => {
     });
   }
 });
-
-            
+ 
 /* Edit A Movie Entry*/
-router.post("/edit/:id",  async(req, res, next) => {
+router.put("/edit/:id",  async(req, res, next) => {
   const options = { new: true, runValidators: true}
   var data = {
     title: req.body.title,
@@ -89,7 +88,7 @@ router.get("/", async(req, res, next) => {
     }
 });
 
-/* Get all movies in a category */
+/* Get movies by category */
 router.get('/:id/all', async(req, res, next) => {
   try {
   var movies = await Movie.find({category: req.params.id}).populate('Category')
@@ -106,7 +105,7 @@ router.get('/:id/all', async(req, res, next) => {
 })
 
 /* Get A Movie */
-router.get("/:id", async(req, res, next) => {
+router.get("/:id/movie", async(req, res, next) => {
   try {
   var movie = await Movie.find({ _id: req.params.id })
   if(!movie){
@@ -145,9 +144,8 @@ router.delete("/delete/:id", async(req, res, next) => {
 });
 
 /* Search Movie */
-router.get("/search/movie", async(req, res, next) => {
+router.get("/search", async(req, res, next) => {
   var data = new RegExp(req.query.q, 'gi');
-
   try {  
   var movies = await Movie.find({$text: {$search: data}});  
   //check if movie is not found 
@@ -163,6 +161,26 @@ router.get("/search/movie", async(req, res, next) => {
        }) 
       
     } catch (error){
+    return res.send({
+      success: false,
+      message: error
+    })
+  }
+})
+
+/*Get movies count*/
+router.get('/movie-count', async(req, res, next) => {
+
+  try {
+    var movies = await Movie.find({})
+    count = movies.length;
+
+    return res.send({
+      success: true,
+      message: count
+    })
+    
+  } catch (error){
     return res.send({
       success: false,
       message: error

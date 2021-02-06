@@ -16,6 +16,12 @@
   "bugs": {
     "url": "https://github.com/blackgik/Rewind-API/issues"
   },
+  "apidoc": {
+    "name": "Rewind API documentation",
+    "title": "Rewind doc",
+    "description": "This documentation describes the endpoints, its params, request and response of this API",
+    "url": "https://rewind-test.herokuapp.com/"
+  },
   "homepage": "https://github.com/blackgik/Rewind-API#readme",
   "dependencies": {
     "@sendgrid/mail": "^7.4.2",
