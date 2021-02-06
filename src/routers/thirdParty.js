@@ -3,6 +3,7 @@ const passport = require('passport')
 const router = new express.Router();
 require('../services/googleValidation')
 require('../services/facebookValidation')
+require('../services/twitterValidation')
 
 
 /**  
@@ -64,5 +65,19 @@ router.get('/facebook', passport.authenticate('facebook', {scope: ['email', 'pro
 // validating or authenticating the user
 router.get('/facebook/callback', 
 passport.authenticate('facebook', { successRedirect: '/good',failureRedirect: '/users/login' }));
+
+
+/**
+ * TWITTER VALIDATION
+ * */ 
+
+ // confirming that the user exist on the facebok platform
+router.get('/auth/twitter', passport.authenticate('twitter', {scope: 'profile'}));
+
+// validating or authenticating the user
+router.get('/auth/twitter/callback',
+  passport.authenticate('twitter', { successRedirect: '/good',
+                                     failureRedirect: '/login' }));
+
 
 module.exports = router
