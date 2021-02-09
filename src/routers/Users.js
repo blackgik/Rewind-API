@@ -239,7 +239,7 @@ router.get('/user', async(req, res)=> {
         const randomUser = Math.floor(Math.random() * Userarray.length)
         Userarray.push(user[randomUser])
         res.status(200).json({
-            user: Userarray[randomUser],
+            Userarray,
             success: true
         })
     }catch(e) {
