@@ -14,7 +14,7 @@ const upload = multer({ dest: "./src/files" });
 
 
 /* Create Movie */
-router.post("/:id/upload", upload.any(), async(req, res, next) => {
+router.post("/upload", upload.any(), (req, res, next) => {
   var data = {
     coverpics_url: req.files[0].path,
     movie_url: req.files[1].path,
@@ -22,16 +22,16 @@ router.post("/:id/upload", upload.any(), async(req, res, next) => {
     description: req.body.description,
     release_date: req.body.release_date,
     cast: req.body.cast,
-    category: req.params.id,
+    category: req.body.category,
     timestamps: Date.now()
   };
 
   try {
-  await cloud.uploads(data.coverpics_url).then((img_metadata) => {
+    cloud.uploads(data.coverpics_url).then((img_metadata) => {
       data.coverpics_url = img_metadata.secure_url;
       cloud.uploads(data.movie_url).then((vid_metadata) => {
         data.movie_url = vid_metadata.secure_url;
-
+  
         var movie = Movie.create(data)
             return res.json({
               success: true,
@@ -55,6 +55,7 @@ router.put("/edit/:id",  async(req, res, next) => {
     description: req.body.description,
     release_date: req.body.release_date,
     cast: req.body.cast,
+    category: req.body.category,
     timestamps: Date.now(),
   };
 
@@ -89,9 +90,16 @@ router.get("/", async(req, res, next) => {
 });
 
 /* Get movies by category */
-router.get('/:id/all', async(req, res, next) => {
+router.get('/all', async(req, res, next) => {
+  
   try {
-  var movies = await Movie.find({category: req.params.id}).populate('Category')
+  var movies = await Movie.find({category: req.body.category})
+  if(_.isEmpty(movies)){
+    return res.send({
+      success: false,
+      message: "No movies in this category"
+    })
+  }
     return res.send({
       success: true,
       message: movies

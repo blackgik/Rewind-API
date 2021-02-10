@@ -36,12 +36,11 @@
  */
 
   /**
- * @api {post} movies/categoryId/upload Create
+ * @api {post} movies/upload Create
  * @apiDescription Creates a new movie
  * @apiName Create Movie
  * @apiGroup Movies
  *
- *  @apiParam {String} categoryId the category's id
  * 
  * @apiParamExample {json} Request-Example: all fields are required
  *{
@@ -51,7 +50,7 @@
     description: req.body.description,
     release_date: req.body.release_date,
     cast: req.body.cast,
-    category: req.params.id
+    category: req.body.category
   }
  *
  *@apiUse Header
@@ -77,7 +76,7 @@
     description: req.body.description,
     release_date: req.body.release_date,
     cast: req.body.cast,
-    category: req.params.id
+    category: req.body.category
   }
  *
  * @apiUse Header
@@ -100,13 +99,15 @@
  */
 
   /**
- * @api {get} movies/categoryId/all Movies List by Category
+ * @api {get} movies/all Movies List by Category
  * @apiDescription Retrieves all movies in a category
  * @apiName List Movies
  * @apiGroup Movies
  * 
- * @apiParam {String} categoryId is the category's id
- * 
+ * * @apiParamExample {json} Request-Example: the title field is required
+ *{
+    "category": "category title"
+  }
  * @apiUse Success
  *
  * @apiUse Error

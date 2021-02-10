@@ -32,7 +32,7 @@ const movieSchema = new mongoose.Schema({
         ref: 'User',
     },
     category: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: String,
         required: false
     }
 },

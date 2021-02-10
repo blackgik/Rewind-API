@@ -394,27 +394,16 @@ define({ "api": [
   },
   {
     "type": "post",
-    "url": "movies/categoryId/upload",
+    "url": "movies/upload",
     "title": "Create",
     "description": "<p>Creates a new movie</p>",
     "name": "Create_Movie",
     "group": "Movies",
     "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "categoryId",
-            "description": "<p>the category's id</p>"
-          }
-        ]
-      },
       "examples": [
         {
           "title": "Request-Example: all fields are required",
-          "content": "{\n    coverpics_url: req.files[0].path,\n    movie_url: req.files[1].path,\n    title: req.body.title,\n    description: req.body.description,\n    release_date: req.body.release_date,\n    cast: req.body.cast,\n    category: req.params.id\n  }",
+          "content": "{\n    coverpics_url: req.files[0].path,\n    movie_url: req.files[1].path,\n    title: req.body.title,\n    description: req.body.description,\n    release_date: req.body.release_date,\n    cast: req.body.cast,\n    category: req.body.category\n  }",
           "type": "json"
         }
       ]
@@ -570,23 +559,19 @@ define({ "api": [
   },
   {
     "type": "get",
-    "url": "movies/categoryId/all",
+    "url": "movies/all",
     "title": "Movies List by Category",
     "description": "<p>Retrieves all movies in a category</p>",
     "name": "List_Movies",
     "group": "Movies",
     "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "categoryId",
-            "description": "<p>is the category's id</p>"
-          }
-        ]
-      }
+      "examples": [
+        {
+          "title": "Request-Example: the title field is required",
+          "content": "{\n    \"category\": \"category title\"\n  }",
+          "type": "json"
+        }
+      ]
     },
     "version": "0.0.0",
     "filename": "documentations/routes/movies.js",
@@ -889,7 +874,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Request-Example: allfields are required",
-          "content": "{\n    coverpics_url: req.files[0].path,\n    movie_url: req.files[1].path,\n    title: req.body.title,\n    description: req.body.description,\n    release_date: req.body.release_date,\n    cast: req.body.cast,\n    category: req.params.id\n  }",
+          "content": "{\n    coverpics_url: req.files[0].path,\n    movie_url: req.files[1].path,\n    title: req.body.title,\n    description: req.body.description,\n    release_date: req.body.release_date,\n    cast: req.body.cast,\n    category: req.body.category\n  }",
           "type": "json"
         }
       ]
