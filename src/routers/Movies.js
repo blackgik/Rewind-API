@@ -90,10 +90,10 @@ router.get("/", async(req, res, next) => {
 });
 
 /* Get movies by category */
-router.get('/all', async(req, res, next) => {
-  
+router.get('/:category', async(req, res, next) => {
+ 
   try {
-  var movies = await Movie.find({category: req.body.category})
+  var movies = await Movie.find({category: req.params.category})
   if(_.isEmpty(movies)){
     return res.send({
       success: false,

@@ -99,15 +99,12 @@
  */
 
   /**
- * @api {get} movies/all Movies List by Category
+ * @api {get} movies/:category Movies List by Category
  * @apiDescription Retrieves all movies in a category
  * @apiName List Movies
  * @apiGroup Movies
  * 
- * * @apiParamExample {json} Request-Example: the title field is required
- *{
-    "category": "category title"
-  }
+ * * @apiParam {String} :category is the category title
  * @apiUse Success
  *
  * @apiUse Error

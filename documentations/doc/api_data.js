@@ -559,19 +559,23 @@ define({ "api": [
   },
   {
     "type": "get",
-    "url": "movies/all",
+    "url": "movies/:category",
     "title": "Movies List by Category",
     "description": "<p>Retrieves all movies in a category</p>",
     "name": "List_Movies",
     "group": "Movies",
     "parameter": {
-      "examples": [
-        {
-          "title": "Request-Example: the title field is required",
-          "content": "{\n    \"category\": \"category title\"\n  }",
-          "type": "json"
-        }
-      ]
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": ":category",
+            "description": "<p>is the category title</p>"
+          }
+        ]
+      }
     },
     "version": "0.0.0",
     "filename": "documentations/routes/movies.js",
