@@ -99,7 +99,7 @@
  */
 
   /**
- * @api {get} movies/:category Movies List by Category
+ * @api {get} movies/:category/movies Movies List by Category
  * @apiDescription Retrieves all movies in a category
  * @apiName List Movies
  * @apiGroup Movies

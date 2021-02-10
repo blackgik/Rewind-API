@@ -559,7 +559,7 @@ define({ "api": [
   },
   {
     "type": "get",
-    "url": "movies/:category",
+    "url": "movies/:category/movies",
     "title": "Movies List by Category",
     "description": "<p>Retrieves all movies in a category</p>",
     "name": "List_Movies",

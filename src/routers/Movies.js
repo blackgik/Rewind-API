@@ -90,7 +90,7 @@ router.get("/", async(req, res, next) => {
 });
 
 /* Get movies by category */
-router.get('/:category', async(req, res, next) => {
+router.get('/:category/movies', async(req, res, next) => {
  
   try {
   var movies = await Movie.find({category: req.params.category})
@@ -195,5 +195,8 @@ router.get('/movie-count', async(req, res, next) => {
     })
   }
 })
+
+/* Get Featured movie */
+
 
 module.exports = router;
