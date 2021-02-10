@@ -90,27 +90,27 @@ router.get("/", async(req, res, next) => {
 });
 
 /* Get movies by category */
-router.get('/:category/movies', async(req, res, next) => {
+// router.get('/:category/movies', async(req, res, next) => {
  
-  try {
-  var movies = await Movie.find({category: req.params.category})
-  if(_.isEmpty(movies)){
-    return res.send({
-      success: false,
-      message: "No movies in this category"
-    })
-  }
-    return res.send({
-      success: true,
-      message: movies
-    })
-  } catch(error){
-    return res.send({
-      success: false,
-      message: error
-    })
-  }
-})
+//   try {
+//   var movies = await Movie.find({category: req.params.category})
+//   if(_.isEmpty(movies)){
+//     return res.send({
+//       success: false,
+//       message: "No movies in this category"
+//     })
+//   }
+//     return res.send({
+//       success: true,
+//       message: movies
+//     })
+//   } catch(error){
+//     return res.send({
+//       success: false,
+//       message: error
+//     })
+//   }
+// })
 
 /* Get A Movie */
 router.get("/:id/movie", async(req, res, next) => {
