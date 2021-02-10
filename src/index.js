@@ -5,10 +5,10 @@ const cookieSession = require('cookie-session')
 require('express-async-errors');
 /** calling the local modules */
 require('./db/mongoose')
-const routes = require('./routes')
+const {routes} = require('./routes')
 
 const app = express()
-
+routes(app)
 // creating the server port
 const port = process.env.PORT
 
@@ -21,7 +21,7 @@ app.use(cookieSession({
   }))
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(routes);
+// app.use(routes);
 
 // serving up the server on the port
 app.listen(port, ()=> {

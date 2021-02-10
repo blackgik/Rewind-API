@@ -90,7 +90,7 @@ router.get("/", async(req, res, next) => {
 });
 
 /* Get movies by category */
-router.get('/:category/moviez', async(req, res, next) => {
+router.get('/:category/movies', async(req, res, next) => {
  
   try {
   var movies = await Movie.find({category: req.params.category})
