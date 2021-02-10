@@ -73,47 +73,47 @@ router.put("/edit/:id",  async(req, res, next) => {
     }
 });
 
-// /* Get All Movies */
-// router.get("/", async(req, res, next) => {
-//   try {
-//   var movies = await Movie.find({})
-//       return res.send({
-//         success: true,
-//         message: movies,
-//       });
-//     } catch (error){
-//       return res.send({
-//         success: false,
-//         message: error
-//       })
-//     }
-// });
+/* Get All Movies */
+router.get("/", async(req, res, next) => {
+  try {
+  var movies = await Movie.find({})
+      return res.send({
+        success: true,
+        message: movies,
+      });
+    } catch (error){
+      return res.send({
+        success: false,
+        message: error
+      })
+    }
+});
 
 /* Get movies by category */
-// router.get('/:category/movies', async(req, res, next) => {
+router.get('/:category/movies', async(req, res, next) => {
  
-//   try {
-//   var movies = await Movie.find({category: req.params.category})
-//   if(_.isEmpty(movies)){
-//     return res.send({
-//       success: false,
-//       message: "No movies in this category"
-//     })
-//   }
-//     return res.send({
-//       success: true,
-//       message: movies
-//     })
-//   } catch(error){
-//     return res.send({
-//       success: false,
-//       message: error
-//     })
-//   }
-// })
+  try {
+  var movies = await Movie.find({category: req.params.category})
+  if(_.isEmpty(movies)){
+    return res.send({
+      success: false,
+      message: "No movies in this category"
+    })
+  }
+    return res.send({
+      success: true,
+      message: movies
+    })
+  } catch(error){
+    return res.send({
+      success: false,
+      message: error
+    })
+  }
+})
 
 /* Get A Movie */
-router.get("/:id/movie/test", async(req, res, next) => {
+router.get("/:id/movie", async(req, res, next) => {
   try {
   var movie = await Movie.find({ _id: req.params.id })
   if(!movie){
@@ -124,7 +124,7 @@ router.get("/:id/movie/test", async(req, res, next) => {
   } else {
       return res.send({
         success: true,
-        message: movie
+        message: movie,
       });
   }
 } catch (error){
