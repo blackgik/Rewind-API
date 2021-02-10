@@ -8,11 +8,6 @@ var DocsRouter = require('../routers/Docs');
 
 var route = express();
 
-
-
-// Add documentation
-//route.use('*', docs);
-
 module.exports.routes = (app) => {
     app.use('/movies', movieRouter);
     app.use('/users', userRouter);
