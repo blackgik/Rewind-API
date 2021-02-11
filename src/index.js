@@ -9,8 +9,12 @@ const {routes} = require('./routes')
 
 const app = express()
 routes(app)
-// creating the server port
-const port = process.env.PORT
+
+/* Allow CORS */
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  next();
+});
 
 // serving up the json file and the routes
 app.use(express.json());
@@ -21,7 +25,9 @@ app.use(cookieSession({
   }))
 app.use(passport.initialize());
 app.use(passport.session());
-// app.use(routes);
+
+// creating the server port
+const port = process.env.PORT
 
 // serving up the server on the port
 app.listen(port, ()=> {
