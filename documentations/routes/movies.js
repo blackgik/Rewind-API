@@ -36,12 +36,11 @@
  */
 
   /**
- * @api {post} movies/categoryId/upload Create
+ * @api {post} movies/upload Create
  * @apiDescription Creates a new movie
  * @apiName Create Movie
  * @apiGroup Movies
  *
- *  @apiParam {String} categoryId the category's id
  * 
  * @apiParamExample {json} Request-Example: all fields are required
  *{
@@ -51,7 +50,7 @@
     description: req.body.description,
     release_date: req.body.release_date,
     cast: req.body.cast,
-    category: req.params.id
+    category: req.body.category
   }
  *
  *@apiUse Header
@@ -77,7 +76,7 @@
     description: req.body.description,
     release_date: req.body.release_date,
     cast: req.body.cast,
-    category: req.params.id
+    category: req.body.category
   }
  *
  * @apiUse Header
@@ -100,13 +99,12 @@
  */
 
   /**
- * @api {get} movies/categoryId/all Movies List by Category
+ * @api {get} movies/:category/movies Movies List by Category
  * @apiDescription Retrieves all movies in a category
  * @apiName List Movies
  * @apiGroup Movies
  * 
- * @apiParam {String} categoryId is the category's id
- * 
+ * * @apiParam {String} :category is the category title
  * @apiUse Success
  *
  * @apiUse Error
@@ -157,6 +155,28 @@
  * @api {get} movies/movie-count Count
  * @apiDescription Get total number of movies
  * @apiName CountMovies
+ * @apiGroup Movies
+ *
+ * @apiUSe Success
+ *
+ * @apiUse Error
+ */
+
+/**
+ * @api {get} movies/recently-added Recently Added
+ * @apiDescription Get the most recent 8 movies
+ * @apiName RecentlyAdded
+ * @apiGroup Movies
+ *
+ * @apiUSe Success
+ *
+ * @apiUse Error
+ */
+
+ /**
+ * @api {get} movies/featured-movies Featured Movies
+ * @apiDescription Get 8 featured movies
+ * @apiName Featured Movies
  * @apiGroup Movies
  *
  * @apiUSe Success

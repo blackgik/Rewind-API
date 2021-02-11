@@ -394,27 +394,16 @@ define({ "api": [
   },
   {
     "type": "post",
-    "url": "movies/categoryId/upload",
+    "url": "movies/upload",
     "title": "Create",
     "description": "<p>Creates a new movie</p>",
     "name": "Create_Movie",
     "group": "Movies",
     "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "categoryId",
-            "description": "<p>the category's id</p>"
-          }
-        ]
-      },
       "examples": [
         {
           "title": "Request-Example: all fields are required",
-          "content": "{\n    coverpics_url: req.files[0].path,\n    movie_url: req.files[1].path,\n    title: req.body.title,\n    description: req.body.description,\n    release_date: req.body.release_date,\n    cast: req.body.cast,\n    category: req.params.id\n  }",
+          "content": "{\n    coverpics_url: req.files[0].path,\n    movie_url: req.files[1].path,\n    title: req.body.title,\n    description: req.body.description,\n    release_date: req.body.release_date,\n    cast: req.body.cast,\n    category: req.body.category\n  }",
           "type": "json"
         }
       ]
@@ -570,7 +559,72 @@ define({ "api": [
   },
   {
     "type": "get",
-    "url": "movies/categoryId/all",
+    "url": "movies/featured-movies",
+    "title": "Featured Movies",
+    "description": "<p>Get 8 featured movies</p>",
+    "name": "Featured_Movies",
+    "group": "Movies",
+    "version": "0.0.0",
+    "filename": "documentations/routes/movies.js",
+    "groupTitle": "Movies",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>The success of the responce usually is true</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "message",
+            "description": "<p>This contains the resource (an object or array of objects) and/or other required particulars</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response",
+          "content": "HTTP/1.1 200/201 OK\n{\n   \"success\": true,\n   \"message\": {...} or [{}, {}, ...],\n \n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>The success of this responce is usually false</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>This is the info about the request</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 xxx\n{\n  \"success\": false,\n  \"message\": \"info about the error if any\"\n}",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "type": "get",
+    "url": "movies/:category/movies",
     "title": "Movies List by Category",
     "description": "<p>Retrieves all movies in a category</p>",
     "name": "List_Movies",
@@ -582,8 +636,8 @@ define({ "api": [
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "categoryId",
-            "description": "<p>is the category's id</p>"
+            "field": ":category",
+            "description": "<p>is the category title</p>"
           }
         ]
       }
@@ -652,6 +706,71 @@ define({ "api": [
     "title": "Movies List",
     "description": "<p>Retrieves all movies in the database</p>",
     "name": "List_Movies",
+    "group": "Movies",
+    "version": "0.0.0",
+    "filename": "documentations/routes/movies.js",
+    "groupTitle": "Movies",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>The success of the responce usually is true</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "message",
+            "description": "<p>This contains the resource (an object or array of objects) and/or other required particulars</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response",
+          "content": "HTTP/1.1 200/201 OK\n{\n   \"success\": true,\n   \"message\": {...} or [{}, {}, ...],\n \n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>The success of this responce is usually false</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>This is the info about the request</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 xxx\n{\n  \"success\": false,\n  \"message\": \"info about the error if any\"\n}",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "type": "get",
+    "url": "movies/recently-added",
+    "title": "Recently Added",
+    "description": "<p>Get the most recent 8 movies</p>",
+    "name": "RecentlyAdded",
     "group": "Movies",
     "version": "0.0.0",
     "filename": "documentations/routes/movies.js",
@@ -889,7 +1008,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Request-Example: allfields are required",
-          "content": "{\n    coverpics_url: req.files[0].path,\n    movie_url: req.files[1].path,\n    title: req.body.title,\n    description: req.body.description,\n    release_date: req.body.release_date,\n    cast: req.body.cast,\n    category: req.params.id\n  }",
+          "content": "{\n    coverpics_url: req.files[0].path,\n    movie_url: req.files[1].path,\n    title: req.body.title,\n    description: req.body.description,\n    release_date: req.body.release_date,\n    cast: req.body.cast,\n    category: req.body.category\n  }",
           "type": "json"
         }
       ]
@@ -897,6 +1016,623 @@ define({ "api": [
     "version": "0.0.0",
     "filename": "documentations/routes/movies.js",
     "groupTitle": "Movies",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "token",
+            "description": "<p>Token value.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>The success of the responce usually is true</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "message",
+            "description": "<p>This contains the resource (an object or array of objects) and/or other required particulars</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response",
+          "content": "HTTP/1.1 200/201 OK\n{\n   \"success\": true,\n   \"message\": {...} or [{}, {}, ...],\n \n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>The success of this responce is usually false</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>This is the info about the request</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 xxx\n{\n  \"success\": false,\n  \"message\": \"info about the error if any\"\n}",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "type": "post",
+    "url": "users/admin-sign-up",
+    "title": "Create Admin",
+    "description": "<p>Creates a new admin</p>",
+    "name": "Create_Admin",
+    "group": "Users",
+    "parameter": {
+      "examples": [
+        {
+          "title": "Request-Example: all fields are required",
+          "content": "{\n   email: req.body.email,\n   password: req.body.password,\n   confirmPassword: req.body.confirmPassword\n  }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "documentations/routes/users.js",
+    "groupTitle": "Users",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "token",
+            "description": "<p>Token value.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>The success of the responce usually is true</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "message",
+            "description": "<p>This contains the resource (an object or array of objects) and/or other required particulars</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response",
+          "content": "HTTP/1.1 200/201 OK\n{\n   \"success\": true,\n   \"message\": {...} or [{}, {}, ...],\n \n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>The success of this responce is usually false</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>This is the info about the request</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 xxx\n{\n  \"success\": false,\n  \"message\": \"info about the error if any\"\n}",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "type": "post",
+    "url": "users/sign-up",
+    "title": "Create",
+    "description": "<p>Creates a new user</p>",
+    "name": "Create_User",
+    "group": "Users",
+    "parameter": {
+      "examples": [
+        {
+          "title": "Request-Example: all fields are required",
+          "content": "{\n   email: req.body.email,\n   password: req.body.password,\n   confirmPassword: req.body.confirmPassword\n  }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "documentations/routes/users.js",
+    "groupTitle": "Users",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "token",
+            "description": "<p>Token value.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>The success of the responce usually is true</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "message",
+            "description": "<p>This contains the resource (an object or array of objects) and/or other required particulars</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response",
+          "content": "HTTP/1.1 200/201 OK\n{\n   \"success\": true,\n   \"message\": {...} or [{}, {}, ...],\n \n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>The success of this responce is usually false</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>This is the info about the request</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 xxx\n{\n  \"success\": false,\n  \"message\": \"info about the error if any\"\n}",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "type": "post",
+    "url": "users/login-admin",
+    "title": "Login Admin",
+    "description": "<p>Logs in an admin</p>",
+    "name": "Login_Admin",
+    "group": "Users",
+    "parameter": {
+      "examples": [
+        {
+          "title": "Request-Example: all fields are required",
+          "content": "{\n   email: req.body.email,\n   password: req.body.password\n  }",
+          "type": "json"
+        }
+      ],
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "emailToken",
+            "description": "<p>is auto-generated</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "documentations/routes/users.js",
+    "groupTitle": "Users",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "token",
+            "description": "<p>Token value.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>The success of the responce usually is true</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "message",
+            "description": "<p>This contains the resource (an object or array of objects) and/or other required particulars</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response",
+          "content": "HTTP/1.1 200/201 OK\n{\n   \"success\": true,\n   \"message\": {...} or [{}, {}, ...],\n \n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>The success of this responce is usually false</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>This is the info about the request</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 xxx\n{\n  \"success\": false,\n  \"message\": \"info about the error if any\"\n}",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "type": "post",
+    "url": "users/login",
+    "title": "Login User",
+    "description": "<p>Logs in a user</p>",
+    "name": "Login_User",
+    "group": "Users",
+    "parameter": {
+      "examples": [
+        {
+          "title": "Request-Example: all fields are required",
+          "content": "{\n   email: req.body.email,\n   password: req.body.password\n  }",
+          "type": "json"
+        }
+      ],
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "token",
+            "description": "<p>is auto-generated</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "documentations/routes/users.js",
+    "groupTitle": "Users",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "token",
+            "description": "<p>Token value.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>The success of the responce usually is true</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "message",
+            "description": "<p>This contains the resource (an object or array of objects) and/or other required particulars</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response",
+          "content": "HTTP/1.1 200/201 OK\n{\n   \"success\": true,\n   \"message\": {...} or [{}, {}, ...],\n \n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>The success of this responce is usually false</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>This is the info about the request</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 xxx\n{\n  \"success\": false,\n  \"message\": \"info about the error if any\"\n}",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "type": "get",
+    "url": "users/get-all-users",
+    "title": "User count",
+    "description": "<p>Counts all the users</p>",
+    "name": "User_Count",
+    "group": "Users",
+    "version": "0.0.0",
+    "filename": "documentations/routes/users.js",
+    "groupTitle": "Users",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "token",
+            "description": "<p>Token value.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>The success of the responce usually is true</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "message",
+            "description": "<p>This contains the resource (an object or array of objects) and/or other required particulars</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response",
+          "content": "HTTP/1.1 200/201 OK\n{\n   \"success\": true,\n   \"message\": {...} or [{}, {}, ...],\n \n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>The success of this responce is usually false</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>This is the info about the request</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 xxx\n{\n  \"success\": false,\n  \"message\": \"info about the error if any\"\n}",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "type": "get",
+    "url": "users/me",
+    "title": "View Profile",
+    "description": "<p>View Profile</p>",
+    "name": "View_Profile",
+    "group": "Users",
+    "version": "0.0.0",
+    "filename": "documentations/routes/users.js",
+    "groupTitle": "Users",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "token",
+            "description": "<p>Token value.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>The success of the responce usually is true</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "message",
+            "description": "<p>This contains the resource (an object or array of objects) and/or other required particulars</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response",
+          "content": "HTTP/1.1 200/201 OK\n{\n   \"success\": true,\n   \"message\": {...} or [{}, {}, ...],\n \n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>The success of this responce is usually false</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>This is the info about the request</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 xxx\n{\n  \"success\": false,\n  \"message\": \"info about the error if any\"\n}",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "type": "get",
+    "url": "users/verify-email?token=emailToken",
+    "title": "Verify Email",
+    "description": "<p>Verfies email</p>",
+    "name": "verifies_a_user_email",
+    "group": "Users",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "emailToken",
+            "description": "<p>is an auto-generated token</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "documentations/routes/users.js",
+    "groupTitle": "Users",
     "header": {
       "fields": {
         "Header": [

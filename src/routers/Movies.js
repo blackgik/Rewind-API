@@ -14,7 +14,7 @@ const upload = multer({ dest: "./src/files" });
 
 
 /* Create Movie */
-router.post("/:id/upload", upload.any(), async(req, res, next) => {
+router.post("/upload", upload.any(), (req, res, next) => {
   var data = {
     coverpics_url: req.files[0].path,
     movie_url: req.files[1].path,
@@ -22,16 +22,16 @@ router.post("/:id/upload", upload.any(), async(req, res, next) => {
     description: req.body.description,
     release_date: req.body.release_date,
     cast: req.body.cast,
-    category: req.params.id,
+    category: req.body.category,
     timestamps: Date.now()
   };
 
   try {
-  await cloud.uploads(data.coverpics_url).then((img_metadata) => {
+    cloud.uploads(data.coverpics_url).then((img_metadata) => {
       data.coverpics_url = img_metadata.secure_url;
       cloud.uploads(data.movie_url).then((vid_metadata) => {
         data.movie_url = vid_metadata.secure_url;
-
+  
         var movie = Movie.create(data)
             return res.json({
               success: true,
@@ -55,6 +55,7 @@ router.put("/edit/:id",  async(req, res, next) => {
     description: req.body.description,
     release_date: req.body.release_date,
     cast: req.body.cast,
+    category: req.body.category,
     timestamps: Date.now(),
   };
 
@@ -89,9 +90,16 @@ router.get("/", async(req, res, next) => {
 });
 
 /* Get movies by category */
-router.get('/:id/all', async(req, res, next) => {
+router.get('/:category/movies', async(req, res, next) => {
+ 
   try {
-  var movies = await Movie.find({category: req.params.id}).populate('Category')
+  var movies = await Movie.find({category: req.params.category})
+  if(_.isEmpty(movies)){
+    return res.send({
+      success: false,
+      message: "No movies in this category"
+    })
+  }
     return res.send({
       success: true,
       message: movies
@@ -180,6 +188,44 @@ router.get('/movie-count', async(req, res, next) => {
       message: count
     })
     
+  } catch (error){
+    return res.send({
+      success: false,
+      message: error
+    })
+  }
+})
+
+/* Get recently added movie */
+router.get('/recently-added', async(req, res, next) => {
+  
+try {
+var recentlyAddedMovies = await Movie.find({}).sort({'updatedAt': -1}).limit(8);
+  
+    return res.send({
+    success: true,
+    message: recentlyAddedMovies
+  })
+
+} catch(error){
+  return res.send({
+    success: false,
+    message: error
+  })
+}
+});
+
+/* Get Featured Movies */
+router.get('/featured-movies', async(req, res, next) => {
+  try {
+  var featuredMovies = Movie.findRandom({},{},{limit: 8}, function(err, featuredMovies) {
+      if (!err) {
+        return res.send({
+          success: true,
+          message: featuredMovies
+        })
+      }
+    });
   } catch (error){
     return res.send({
       success: false,

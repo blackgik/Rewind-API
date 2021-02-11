@@ -9,7 +9,6 @@ router.post('/new', async(req, res, next) => {
     var data = {
         title: req.body.title
     }
-
     try {
     var category = await Category.create(data);
 
