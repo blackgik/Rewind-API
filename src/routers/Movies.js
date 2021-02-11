@@ -3,6 +3,7 @@ const router = express.Router();
 const fs = require("fs");
 const multer = require("multer");
 const _ = require("lodash");
+const moment = require("moment");
 require('express-async-errors');
 
 const auth = require('../middleware/auth')
@@ -23,15 +24,19 @@ router.post("/upload", upload.any(), (req, res, next) => {
     release_date: req.body.release_date,
     cast: req.body.cast,
     category: req.body.category,
+    length: "",
     timestamps: Date.now()
   };
-
+ 
   try {
-    cloud.uploads(data.coverpics_url).then((img_metadata) => {
+   cloud.uploads(data.coverpics_url).then((img_metadata) => {
       data.coverpics_url = img_metadata.secure_url;
       cloud.uploads(data.movie_url).then((vid_metadata) => {
         data.movie_url = vid_metadata.secure_url;
-  
+        var sec_length = vid_metadata.duration
+        data.length = moment.unix(sec_length).utc().format('H [hrs] m [min]');
+        console.log(data.length);
+
         var movie = Movie.create(data)
             return res.json({
               success: true,

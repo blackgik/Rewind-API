@@ -25,8 +25,11 @@ const movieSchema = new mongoose.Schema({
     cast: {
        type: String,
        required: true 
-    }
-    ,
+    },
+    length: {
+        type: String,
+        required: false
+    },
     owner: {
         type: mongoose.Schema.Types.ObjectId,
         required: false,
