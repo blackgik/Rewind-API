@@ -44,8 +44,7 @@ const movieSchema = new mongoose.Schema({
     timestamps: true
 }
 )
-movieSchema.plugin(random);
 
-movieSchema.index({ title: 'text'});
+movieSchema.index({ title: 'text'}).plugin(random);
 
 module.exports = mongoose.model('Movie', movieSchema);
