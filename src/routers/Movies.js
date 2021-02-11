@@ -196,7 +196,42 @@ router.get('/movie-count', async(req, res, next) => {
   }
 })
 
-/* Get Featured movie */
+/* Get recently added movie */
+router.get('/recently-added', async(req, res, next) => {
+  
+try {
+var recentlyAddedMovies = await Movie.find({}).sort({'updatedAt': -1}).limit(8);
+  
+    return res.send({
+    success: true,
+    message: recentlyAddedMovies
+  })
 
+} catch(error){
+  return res.send({
+    success: false,
+    message: error
+  })
+}
+});
+
+/* Get Featured Movies */
+router.get('/featured-movies', async(req, res, next) => {
+  try {
+  var featuredMovies = Movie.findRandom({},{},{limit: 8}, function(err, featuredMovies) {
+      if (!err) {
+        return res.send({
+          success: true,
+          message: featuredMovies
+        })
+      }
+    });
+  } catch (error){
+    return res.send({
+      success: false,
+      message: error
+    })
+  }
+})
 
 module.exports = router;

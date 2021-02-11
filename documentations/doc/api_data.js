@@ -559,6 +559,71 @@ define({ "api": [
   },
   {
     "type": "get",
+    "url": "movies/featured-movies",
+    "title": "Featured Movies",
+    "description": "<p>Get 8 featured movies</p>",
+    "name": "Featured_Movies",
+    "group": "Movies",
+    "version": "0.0.0",
+    "filename": "documentations/routes/movies.js",
+    "groupTitle": "Movies",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>The success of the responce usually is true</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "message",
+            "description": "<p>This contains the resource (an object or array of objects) and/or other required particulars</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response",
+          "content": "HTTP/1.1 200/201 OK\n{\n   \"success\": true,\n   \"message\": {...} or [{}, {}, ...],\n \n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>The success of this responce is usually false</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>This is the info about the request</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 xxx\n{\n  \"success\": false,\n  \"message\": \"info about the error if any\"\n}",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "type": "get",
     "url": "movies/:category/movies",
     "title": "Movies List by Category",
     "description": "<p>Retrieves all movies in a category</p>",
@@ -641,6 +706,71 @@ define({ "api": [
     "title": "Movies List",
     "description": "<p>Retrieves all movies in the database</p>",
     "name": "List_Movies",
+    "group": "Movies",
+    "version": "0.0.0",
+    "filename": "documentations/routes/movies.js",
+    "groupTitle": "Movies",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>The success of the responce usually is true</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "message",
+            "description": "<p>This contains the resource (an object or array of objects) and/or other required particulars</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response",
+          "content": "HTTP/1.1 200/201 OK\n{\n   \"success\": true,\n   \"message\": {...} or [{}, {}, ...],\n \n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>The success of this responce is usually false</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>This is the info about the request</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 xxx\n{\n  \"success\": false,\n  \"message\": \"info about the error if any\"\n}",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "type": "get",
+    "url": "movies/recently-added",
+    "title": "Recently Added",
+    "description": "<p>Get the most recent 8 movies</p>",
+    "name": "RecentlyAdded",
     "group": "Movies",
     "version": "0.0.0",
     "filename": "documentations/routes/movies.js",

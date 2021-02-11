@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var random = require('mongoose-simple-random');
 
 const movieSchema = new mongoose.Schema({
     coverpics_url: {
@@ -40,6 +41,7 @@ const movieSchema = new mongoose.Schema({
     timestamps: true
 }
 )
+movieSchema.plugin(random);
 
 movieSchema.index({ title: 'text'});
 

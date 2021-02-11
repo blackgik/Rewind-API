@@ -161,3 +161,25 @@
  *
  * @apiUse Error
  */
+
+/**
+ * @api {get} movies/recently-added Recently Added
+ * @apiDescription Get the most recent 8 movies
+ * @apiName RecentlyAdded
+ * @apiGroup Movies
+ *
+ * @apiUSe Success
+ *
+ * @apiUse Error
+ */
+
+ /**
+ * @api {get} movies/featured-movies Featured Movies
+ * @apiDescription Get 8 featured movies
+ * @apiName Featured Movies
+ * @apiGroup Movies
+ *
+ * @apiUSe Success
+ *
+ * @apiUse Error
+ */
