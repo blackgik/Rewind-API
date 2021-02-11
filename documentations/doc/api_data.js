@@ -561,7 +561,7 @@ define({ "api": [
     "type": "get",
     "url": "movies/featured-movies",
     "title": "Featured Movies",
-    "description": "<p>Get 8 featured movies</p>",
+    "description": "<p>Get 4 featured movies</p>",
     "name": "Featured_Movies",
     "group": "Movies",
     "version": "0.0.0",
@@ -624,9 +624,9 @@ define({ "api": [
   },
   {
     "type": "get",
-    "url": "movies/:category/movies",
+    "url": "movies/:category/movies?page=number&limit=number",
     "title": "Movies List by Category",
-    "description": "<p>Retrieves all movies in a category</p>",
+    "description": "<p>Retrieves 12 movies in a category</p>",
     "name": "List_Movies",
     "group": "Movies",
     "parameter": {
@@ -638,6 +638,13 @@ define({ "api": [
             "optional": false,
             "field": ":category",
             "description": "<p>is the category title</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "page",
+            "description": "<p>&amp; limit - this request gets 12 movies in the database, an increment by 1 of the page number will give the next 12 movies. The default page value is 1.  Limit sets the number of items per requests, the default value is 12.</p>"
           }
         ]
       }
@@ -702,11 +709,24 @@ define({ "api": [
   },
   {
     "type": "get",
-    "url": "movies",
+    "url": "movies?page=number&limit=number",
     "title": "Movies List",
-    "description": "<p>Retrieves all movies in the database</p>",
+    "description": "<p>Retrieves movies in the database with a limit of 12 per page</p>",
     "name": "List_Movies",
     "group": "Movies",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "page",
+            "description": "<p>&amp; limit - this request gets 12 movies in the database, an increment by 1 of the page number will give the next 12. The default page value is 1. Limit sets the number of items per requests, the default value is 12.</p>"
+          }
+        ]
+      }
+    },
     "version": "0.0.0",
     "filename": "documentations/routes/movies.js",
     "groupTitle": "Movies",
@@ -769,7 +789,7 @@ define({ "api": [
     "type": "get",
     "url": "movies/recently-added",
     "title": "Recently Added",
-    "description": "<p>Get the most recent 8 movies</p>",
+    "description": "<p>Get the most recent 6 movies</p>",
     "name": "RecentlyAdded",
     "group": "Movies",
     "version": "0.0.0",
