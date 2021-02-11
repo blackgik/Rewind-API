@@ -25,8 +25,11 @@ const movieSchema = new mongoose.Schema({
     cast: {
        type: String,
        required: true 
-    }
-    ,
+    },
+    length: {
+        type: String,
+        required: false
+    },
     owner: {
         type: mongoose.Schema.Types.ObjectId,
         required: false,
@@ -41,8 +44,7 @@ const movieSchema = new mongoose.Schema({
     timestamps: true
 }
 )
-movieSchema.plugin(random);
 
-movieSchema.index({ title: 'text'});
+movieSchema.index({ title: 'text'}).plugin(random);
 
 module.exports = mongoose.model('Movie', movieSchema);

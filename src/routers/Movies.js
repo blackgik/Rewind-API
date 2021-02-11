@@ -3,6 +3,7 @@ const router = express.Router();
 const fs = require("fs");
 const multer = require("multer");
 const _ = require("lodash");
+const moment = require("moment");
 require('express-async-errors');
 
 const auth = require('../middleware/auth')
@@ -23,15 +24,19 @@ router.post("/upload", upload.any(), (req, res, next) => {
     release_date: req.body.release_date,
     cast: req.body.cast,
     category: req.body.category,
+    length: "",
     timestamps: Date.now()
   };
-
+ 
   try {
-    cloud.uploads(data.coverpics_url).then((img_metadata) => {
+   cloud.uploads(data.coverpics_url).then((img_metadata) => {
       data.coverpics_url = img_metadata.secure_url;
       cloud.uploads(data.movie_url).then((vid_metadata) => {
         data.movie_url = vid_metadata.secure_url;
-  
+        var sec_length = vid_metadata.duration
+        data.length = moment.unix(sec_length).utc().format('H [hrs] m [min]');
+        console.log(data.length);
+
         var movie = Movie.create(data)
             return res.json({
               success: true,
@@ -75,8 +80,10 @@ router.put("/edit/:id",  async(req, res, next) => {
 
 /* Get All Movies */
 router.get("/", async(req, res, next) => {
+  const { page = 1, limit = 12 } = req.query;
+
   try {
-  var movies = await Movie.find({})
+  var movies = await Movie.find({}).limit(limit * 1).skip((page - 1) * limit).exec();
       return res.send({
         success: true,
         message: movies,
@@ -91,9 +98,10 @@ router.get("/", async(req, res, next) => {
 
 /* Get movies by category */
 router.get('/:category/movies', async(req, res, next) => {
+  const { page = 1, limit = 12 } = req.query;
  
   try {
-  var movies = await Movie.find({category: req.params.category})
+  var movies = await Movie.find({category: req.params.category}).limit(limit * 1).skip((page - 1) * limit).exec();
   if(_.isEmpty(movies)){
     return res.send({
       success: false,
@@ -200,7 +208,7 @@ router.get('/movie-count', async(req, res, next) => {
 router.get('/recently-added', async(req, res, next) => {
   
 try {
-var recentlyAddedMovies = await Movie.find({}).sort({'updatedAt': -1}).limit(8);
+var recentlyAddedMovies = await Movie.find({}).sort({'updatedAt': -1}).limit(6);
   
     return res.send({
     success: true,
@@ -218,7 +226,7 @@ var recentlyAddedMovies = await Movie.find({}).sort({'updatedAt': -1}).limit(8);
 /* Get Featured Movies */
 router.get('/featured-movies', async(req, res, next) => {
   try {
-  var featuredMovies = Movie.findRandom({},{},{limit: 8}, function(err, featuredMovies) {
+  var featuredMovies = Movie.findRandom({},{},{limit: 4}, function(err, featuredMovies) {
       if (!err) {
         return res.send({
           success: true,

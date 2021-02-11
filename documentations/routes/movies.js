@@ -87,10 +87,12 @@
  */
 
  /**
- * @api {get} movies Movies List
- * @apiDescription Retrieves all movies in the database
+ * @api {get} movies?page=number&limit=number Movies List
+ * @apiDescription Retrieves movies in the database with a limit of 12 per page
  * @apiName List Movies
  * @apiGroup Movies
+ * 
+ *  @apiParam {Number} page & limit - this request gets 12 movies in the database, an increment by 1 of the page number will give the next 12. The default page value is 1. Limit sets the number of items per requests, the default value is 12.
  * 
  * @apiUse Success
  *
@@ -99,12 +101,15 @@
  */
 
   /**
- * @api {get} movies/:category/movies Movies List by Category
- * @apiDescription Retrieves all movies in a category
+ * @api {get} movies/:category/movies?page=number&limit=number Movies List by Category
+ * @apiDescription Retrieves 12 movies in a category
  * @apiName List Movies
  * @apiGroup Movies
  * 
- * * @apiParam {String} :category is the category title
+ * @apiParam {String} :category is the category title
+ * 
+ * @apiParam {Number} page & limit - this request gets 12 movies in the database, an increment by 1 of the page number will give the next 12 movies. The default page value is 1.  Limit sets the number of items per requests, the default value is 12.
+ * 
  * @apiUse Success
  *
  * @apiUse Error
@@ -164,7 +169,7 @@
 
 /**
  * @api {get} movies/recently-added Recently Added
- * @apiDescription Get the most recent 8 movies
+ * @apiDescription Get the most recent 6 movies
  * @apiName RecentlyAdded
  * @apiGroup Movies
  *
@@ -175,7 +180,7 @@
 
  /**
  * @api {get} movies/featured-movies Featured Movies
- * @apiDescription Get 8 featured movies
+ * @apiDescription Get 4 featured movies
  * @apiName Featured Movies
  * @apiGroup Movies
  *
