@@ -30,7 +30,7 @@ const verificationEmail = async  (email, emailToken, username)=> {
         html:`
             <h2>HELLO ${username}</h2>
             <p>At Rewind Its all about the experience...</p>
-            <a href="http://${process.env.BASE_URL}/users/verify-email/?token=${emailToken}"> <img src="cid:image"/></a>
+            <a href="http://${process.env.BASE_URL}/login/?token=${emailToken}"> <img src="cid:image"/></a>
         `,
         attachments: [
             {
