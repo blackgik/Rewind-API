@@ -104,8 +104,8 @@ const sendEmailCancelation = async (email, name)=>{
         text: `Hey ${name} we noticed you logout on your device, \n anything we could done to be better?`,
         html: `Hey ${name} we noticed you logout on your device, \n anything we could done to be better?`
     })
-    }catch(e){
-        console.log(e)
+    }catch(er){
+        console.log(er)
     }
 }
 
