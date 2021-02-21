@@ -12,7 +12,7 @@ const {verificationEmail} = require('../services/emailVerify')
  * 
  * @desc registrating the users {users, admin}
  * */ 
-const userRegistration = async (userDet, role, res) => {
+const userRegistration = async (userDet, res, role) => {
     try{
         // username validation
         const usernameNotTaken = await usernameValidation(userDet.username, role);
@@ -47,7 +47,7 @@ const userRegistration = async (userDet, role, res) => {
         // console.log(username)
         newUser.username = username
         await newUser.save()
-        verificationEmail(newUser.email, newUser.emailToken, newUser.username)
+        // verificationEmail(newUser.email, newUser.emailToken, newUser.username)
         const token = newUser.generateAuthToken()
         return res.status(201).json({
             newUser,
@@ -56,18 +56,13 @@ const userRegistration = async (userDet, role, res) => {
             success: true
         })
     }catch(err) {
-        console.log(err)
+        // console.log(err)
         return res.status(500).json({
             message: 'unable to register the user'
         })
     }
 
 }
-
-/**
- * 
- * @desc registrating the users {users, admin}
- * */ 
 
 // user login validation
 const userLogin = async (userCreds, role, res)=> {
@@ -196,6 +191,12 @@ const userLogin = async (userCreds, role, res)=> {
         })
     }
 }
+
+/**
+ * FURTHER CREDENTIALS EVALUATION ASIDE FROM THE SCHEMA EVALUATIONS.
+ * TO ENSURE WE GET THE PROPER USERS REGISTERED
+ * 
+ * */ 
 
 // username validation 
 const usernameValidation = async (username, role)=> {

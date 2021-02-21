@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const validator = require('validator')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const Movie = require('../Model/MoviesModel')
+const Movie = require('./../Model/MoviesModel')
 require('../db/mongoose')
 
 
@@ -149,7 +149,7 @@ UserSchema.pre('save', async function(next) {
 
 UserSchema.pre('remove', async function(next) {
     const user = this
-    await Movie.findMany({owner:user._id})
+    await Movie.deleteMany({owner:user._id})
 
     next()
 })

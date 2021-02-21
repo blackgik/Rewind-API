@@ -12,16 +12,17 @@ const router = new express.Router()
 const { userRegistration, userLogin, userCount, forgotPassword, resetPassword } = require('../controllers/userRoleAuth');
 const e = require('express');
 const { post } = require('../routes');
+const { isNull } = require('lodash');
 
 
 // creating the user 
 router.post('/sign-up', async (req, res)=>{
-    await userRegistration(req.body, 'users', res)
+    await userRegistration(req.body, res)
 });
 
 // admin registration 
 router.post('/admin-sign-up', async(req, res)=>{
-    await userRegistration(req.body, 'admin', res)
+    await userRegistration(req.body, res, 'admin')
 })
 
 // route to verify email
@@ -111,7 +112,7 @@ router.post('/me/logout', auth, async(req, res)=> {
 // logout user from every device
 router.post('/me/logoutall', auth, async(req, res)=> {
     try{
-        req.user.tokens =req.user.tokens.filter((token)=> delete token)
+        req.user.tokens = req.user.tokens.filter((token)=> token = null)
         req.user.save()
         sendEmailCancelation(req.user.email, req.user.username)
         res.status(200).json({
@@ -220,11 +221,12 @@ router.delete('/me/avatar', auth, async (req, res)=> {
 })
 
 // deleting a user
-router.delete('/users/me', auth,  async  (req, res)=> {
+router.delete('/me', auth,  async (req, res)=> {
     try{
         await req.user.remove()
         res.send(req.user)
     } catch (e) {
+        console.log(e)
         res.status(500).send()
     }
 })
