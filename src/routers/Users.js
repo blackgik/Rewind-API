@@ -174,7 +174,7 @@ router.post('/me/avatar', auth, upload.single('avatar'), async (req, res)=> {
     req.user.avatar = buffer;
 
     await req.user.save()
-    res.json({
+    res.status(200).json({
         success: true
     })
 }, (error, req, res, next) => {

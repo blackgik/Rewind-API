@@ -121,3 +121,38 @@ test('deleting without authentication', async()=> {
         .send()
         .expect(401)
 })
+
+test('uploading the avatar', async()=> {
+    await request(app)
+        .post('/users/me/avatar')
+        .set('Authorization', `Bearer ${userOne.tokens[0].token}`)
+        .attach('avatar', 'test/fixtures/IMG_5261.jpg')
+        .expect(200)
+
+    const user = User.findById(userOneId)
+    
+    
+})
+
+test('updating user info', async()=> {
+    await request(app)
+        .patch('/users/me/update')
+        .set('Authorization', `Bearer ${userOne.tokens[0].token}` )
+        .send({
+            email:'echendu@gmail.com'
+        })
+        .expect(200)
+    const user = await User.findById(userOneId)
+    expect(user.email).toEqual('echendu@gmail.com')
+})
+
+test('updating user info that does not exist', async()=> {
+    await request(app)
+        .patch('/users/me/update')
+        .set('Authorization', `Bearer ${userOne.tokens[0].token}` )
+        .send({
+            location:'anambra'
+        })
+        .expect(400)
+    
+})
