@@ -46,5 +46,6 @@ const movieSchema = new mongoose.Schema({
 )
 
 movieSchema.index({ title: 'text'}).plugin(random);
+const Movie =  mongoose.model('Movie', movieSchema);
 
-module.exports = mongoose.model('Movie', movieSchema);
+module.exports = Movie

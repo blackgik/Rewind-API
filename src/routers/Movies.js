@@ -38,7 +38,7 @@ router.post("/upload", upload.any(), (req, res, next) => {
         console.log(data.length);
 
         var movie = Movie.create(data)
-            return res.json({
+            return res.status(201).json({
               success: true,
               message: data,
             });
