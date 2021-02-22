@@ -92,7 +92,7 @@ router.get('/get-all-users', auth, async(req, res)=>{
 })
 
 // User logout
-router.post('/me/logout', auth, async(req, res)=> {
+router.get('/me/logout', auth, async(req, res)=> {
     try{
         req.user.tokens = req.user.tokens.filter((token) => {
             return token.token != req.token
@@ -100,8 +100,8 @@ router.post('/me/logout', auth, async(req, res)=> {
 
         await req.user.save()
         sendEmailCancelation(req.user.email, req.user.username)
-        res.send({
-            message: 'logout successfully'
+        res.status(200).send({
+            message: 'logout was successful'
         })
 
     }catch(e) {
@@ -110,7 +110,7 @@ router.post('/me/logout', auth, async(req, res)=> {
 })
 
 // logout user from every device
-router.post('/me/logoutall', auth, async(req, res)=> {
+router.get('/me/logoutall', auth, async(req, res)=> {
     try{
         req.user.tokens = req.user.tokens.filter((token)=> token = null)
         req.user.save()

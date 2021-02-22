@@ -41,14 +41,15 @@ const userRegistration = async (userDet, res, role) => {
         var username = ''
         if (userDet.email.includes('.')){
             username = userDet.email.split('.')[0]
-        }else{
+        }
+        if (userDet.email.includes('@')){
             username = userDet.email.split('@')[0]
         }
         // console.log(username)
         newUser.username = username
         await newUser.save()
         // verificationEmail(newUser.email, newUser.emailToken, newUser.username)
-        const token = newUser.generateAuthToken()
+        const token = await newUser.generateAuthToken()
         return res.status(201).json({
             newUser,
             token,

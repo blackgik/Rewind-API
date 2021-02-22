@@ -33,6 +33,17 @@ test('signup a new user', async()=> {
     const user = await User.findById(response.body.newUser._id)
     expect(user).not.toBeNull()
 
+    // asserting the user matches what we have in the database
+    expect(response.body).toMatchObject({
+        
+        newUser: {
+            email: 'benard@gmail.com'
+        },
+        token : user.tokens[0].token
+    })
+    expect(user.password).not.toBe('ben123nard!')
+
+
 })
 
 test('signup a new admin', async()=> {
@@ -46,6 +57,16 @@ test('signup a new admin', async()=> {
     const user = await User.findById(response.body.newUser._id)
     expect(user).not.toBeNull()
 
+    expect(response.body).toMatchObject({
+        
+        newUser: {
+            email: 'guster@gmail.com'
+        },
+        token : user.tokens[0].token
+    })
+    expect(user.confirmPassword).toBe('bpgud1234!!!')
+    
+
 })
 
 test('singup a new user with wrong credentials', async()=> {
@@ -57,10 +78,15 @@ test('singup a new user with wrong credentials', async()=> {
 });
 
 test('login users (correct credentials)', async ()=> {
-    await request(app).post('/users/login').send({
+    const response = await request(app).post('/users/login').send({
         email: 'barak@gmail.com',
         password: 'carenot!!1234'
     }).expect(202)
+
+    const user = await User.findById(userOneId)
+    expect(response.body.token).toBe(user.tokens[1].token)
+
+    expect(user.password).not.toBe('carenot!!1234')
 })
 
 test('viewing users profile', async() => {
@@ -72,7 +98,7 @@ test('viewing users profile', async() => {
     
 })
 
-test('viewing profilw without authentication', async()=> {
+test('viewing profile without authentication', async()=> {
     await request(app)
         .get('/users/me')
         .send()
@@ -80,11 +106,13 @@ test('viewing profilw without authentication', async()=> {
 })
 
 test('deleting authenticating user', async()=> {
-    await request(app)
+    const response = await request(app)
         .delete('/users/me')
         .set('Authorization', `Bearer ${userOne.tokens[0].token}`)
         .send()
         .expect(200)
+    const user = await User.findById(response.body._id)
+    expect(user).toBeNull()
 })
 
 test('deleting without authentication', async()=> {
