@@ -1,27 +1,6 @@
-# Rewind-API
+API Documentation for this project can be found at 
+https://rewind-apidocs.netlify.app/
 
-**Create an src/files directory - multer will save files here, then fs dletes the files after it is uploaded to cloudinary
-
-BASE_URL: https://rewind-test.herokuapp.com/
-
-fields:
-
-coverpics_url,
-movie_url,
-title,
-description,
-release_date
-
-UPLOAD_ROUTE: https://rewind-test.herokuapp.com/upload
-
-GET_ALL_MOVIES_ROUTE: https://rewind-test.herokuapp.com/
-
-GET_ONE_MOVIE_ROUTE: https://rewind-test.herokuapp.com/:id
-where id is ObjectID i.e _id
-
-SEARCH_MOVIE: https://rewind-test.herokuapp.com/movie/search
-
-where search query param is "title" and has a value of the title of the movie 
 
 REWIND API -->
 SUMMARY: The rewind api is used to create a movie streaming platform. The idea of the movie streaming platform is to enable users to have a feel of their past and ensure that that they get the happiness they got when they were kids. Below is a well documented flow of the folders and the routes they hold.
