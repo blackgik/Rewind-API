@@ -8,6 +8,7 @@ beforeEach(setUpDatabase)
 test('creating a new movie', async()=> {
     const response = await request(app)
         .post('/movies/upload')
+        .attach('', '')
         .send({
             coverpics_url: 'www.moviechannel.com',
             movie_url: 'www.google.com',
@@ -15,8 +16,7 @@ test('creating a new movie', async()=> {
             description: 'a god braight donw his wrought bcos man he loved betrayed him',
             release_date: '1998',
             cast: 'jennifer lopez',
-            category: 'action',
-            length: "",
+            category: 'action'
         })
         .expect(201)
 })
