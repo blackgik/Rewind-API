@@ -1,4 +1,6 @@
-API Documentation for this project can be found at rewind-apidocs.netlify.app
+API Documentation for this project can be found at 
+https://rewind-apidocs.netlify.app/
+
 
 REWIND API -->
 SUMMARY: The rewind api is used to create a movie streaming platform. The idea of the movie streaming platform is to enable users to have a feel of their past and ensure that that they get the happiness they got when they were kids. Below is a well documented flow of the folders and the routes they hold.
