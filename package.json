@@ -9,11 +9,9 @@
     "build-doc": "apidoc -i documentations/routes -o documentations/doc",
     "test": "env-cmd -f ./config/test.env jest --watch --runInBand --detectOpenHandles"
   },
-
   "jest": {
     "testEnvironment": "node"
   },
-  
   "repository": {
     "type": "git",
     "url": "git+https://github.com/blackgik/Rewind-API.git"
