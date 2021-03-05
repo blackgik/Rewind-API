@@ -59,7 +59,7 @@ const userRegistration = async (userDet, res, role) => {
     }catch(err) {
         console.log(err)
         return res.status(500).json({
-            message: 'unable to register the user'
+            message: errs
         })
     }
 
